@@ -17,7 +17,9 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet var weatherImageView: UIImageView!
     @IBOutlet var tempLabel: UILabel!
+    @IBOutlet var celciusLabel: UILabel!
     @IBOutlet var cityLabel: UILabel!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var searchTextField: UITextField!
     
     override func viewDidLoad() {
@@ -25,6 +27,7 @@ class WeatherViewController: UIViewController {
         locationManager.delegate = self
         searchTextField.delegate = self
         weatherService.delegate = self
+        activityIndicator.startAnimating()
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
         notificationForKeyboard()
@@ -32,6 +35,8 @@ class WeatherViewController: UIViewController {
 
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         locationManager.requestLocation()
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
     }
     
     private func notificationForKeyboard() {
@@ -97,15 +102,23 @@ extension WeatherViewController: CLLocationManagerDelegate {
 }
 
 extension WeatherViewController: WeatherServiceDelegate {
+  
     func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.tempLabel.text = weather.temperatureString
             self.weatherImageView.image = UIImage(systemName: weather.conditionName)
             self.cityLabel.text = weather.cityName
+            self.celciusLabel.text = "°C"
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
         }
     }
     
     func didFailWithError(error: Error) {
         print(error)
+    }
+    
+    func didShowActivityIndicator() {
+        
     }
 }
