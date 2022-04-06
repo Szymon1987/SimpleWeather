@@ -15,7 +15,7 @@ protocol WeatherServiceDelegate {
 
 struct WeatherService {
     
-    let url = "https://api.openweathermap.org/data/2.5/weather?appid=\(Constants.openWeatherApiKey)&units=metric"
+    let url = "https://api.openweathermap.org/data/2.5/weather?appid=aa4a676216f9b5dc4ff27c58beff9360&units=metric"
     
     var delegate: WeatherServiceDelegate?
     
@@ -39,7 +39,6 @@ struct WeatherService {
                 if let data = data {
                     if let weather = parseJSON(with: data) {
                         self.delegate?.didUpdateWeather(self, weather: weather)
-                        print("fired")
                     }
                 }
             }
