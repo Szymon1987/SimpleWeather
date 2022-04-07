@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD491F6827FF2A0D006F0585 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD491F6727FF2A0D006F0585 /* Haptic.swift */; };
 		ADB0403627FC930A00D8AC4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403527FC930A00D8AC4A /* AppDelegate.swift */; };
 		ADB0403827FC930A00D8AC4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403727FC930A00D8AC4A /* SceneDelegate.swift */; };
 		ADB0403A27FC930A00D8AC4A /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403927FC930A00D8AC4A /* WeatherViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AD491F6727FF2A0D006F0585 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		ADB0403227FC930A00D8AC4A /* SimpleWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADB0403527FC930A00D8AC4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADB0403727FC930A00D8AC4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			children = (
 				ADB0404927FCA03E00D8AC4A /* Notes.swift */,
 				ADB0405127FCEE8A00D8AC4A /* Extensions.swift */,
+				AD491F6727FF2A0D006F0585 /* Haptic.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADB0403A27FC930A00D8AC4A /* WeatherViewController.swift in Sources */,
+				AD491F6827FF2A0D006F0585 /* Haptic.swift in Sources */,
 				ADB0405227FCEE8A00D8AC4A /* Extensions.swift in Sources */,
 				ADB0403627FC930A00D8AC4A /* AppDelegate.swift in Sources */,
 				ADB0405427FD8EE100D8AC4A /* WeatherService.swift in Sources */,

@@ -7,11 +7,13 @@
 
 import UIKit
 import CoreLocation
+import CoreLocationUI
 
 class WeatherViewController: UIViewController {
     
     var weatherService = WeatherService()
     let locationManager = CLLocationManager()
+    let defaults = UserDefaults.standard
     
     //MARK: - IBOutlets
     
@@ -27,16 +29,15 @@ class WeatherViewController: UIViewController {
         locationManager.delegate = self
         searchTextField.delegate = self
         weatherService.delegate = self
-        activityIndicator.startAnimating()
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
         notificationForKeyboard()
+        activityIndicator.isHidden = true
     }
-
+    
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         locationManager.requestLocation()
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
+        Haptics.playLightImpact()
     }
     
     private func notificationForKeyboard() {
@@ -49,6 +50,7 @@ class WeatherViewController: UIViewController {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         self.view.frame.origin.y = 0 - keyboardSize.height
     }
+    
     @objc func keyboardWillHide(notification: NSNotification) {
         self.view.frame.origin.y = 0
     }
@@ -60,6 +62,7 @@ extension WeatherViewController: UITextFieldDelegate {
     
     @IBAction func searchButtonTapped(_ sender: UIButton) {
         searchTextField.endEditing(true)
+        Haptics.playLightImpact()
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -90,19 +93,23 @@ extension WeatherViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
+            activityIndicator.isHidden = false
+            activityIndicator.startAnimating()
+            
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             weatherService.fetchWeather(latitude: lat, longitude: lon)
         }
     }
+     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
 }
-
+//MARK: - WeatherServiceDelegate
 extension WeatherViewController: WeatherServiceDelegate {
-  
+    
     func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.tempLabel.text = weather.temperatureString
