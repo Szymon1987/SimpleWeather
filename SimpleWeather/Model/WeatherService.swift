@@ -19,22 +19,22 @@ protocol WeatherServiceDelegate {
 }
 
 struct WeatherService {
-    
-    let url = "https://api.openweathermap.org/data/2.5/weather?appid=aa4a676216f9b5dc4ff27c58beff9360&units=metric"
+
+    private let url = API.openWeatherBaseUrl + API.openWeatherApiKey + "&units=metric"
     
     var delegate: WeatherServiceDelegate?
     
-    func fetchWeather(for cityName: String) {
+    public func fetchWeather(for cityName: String) {
         let urlString = "\(url)&q=\(cityName)"
         performRequest(for: urlString)
     }
 
-    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    public func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let urlString = "\(url)&lat=\(latitude)&lon=\(longitude)"
         performRequest(for: urlString)
     }
     
-    func performRequest(for urlString: String) {
+    private func performRequest(for urlString: String) {
         if let url = URL(string: urlString) {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
@@ -52,7 +52,7 @@ struct WeatherService {
         }
     }
 
-    func parseJSON(with data: Data) -> WeatherModel? {
+    private func parseJSON(with data: Data) -> WeatherModel? {
         let decoder = JSONDecoder()
         do {
             let decodedWeatherData = try decoder.decode(WeatherData.self, from: data)

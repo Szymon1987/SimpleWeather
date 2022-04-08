@@ -10,9 +10,8 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
-    var weatherService = WeatherService()
+    private var weatherService = WeatherService()
     let locationManager = CLLocationManager()
-    let defaults = UserDefaults.standard
     
     //MARK: - IBOutlets
     
@@ -25,20 +24,21 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+    }
+    
+    private func setup() {
         locationManager.delegate = self
         searchTextField.delegate = self
         weatherService.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+//        locationManager.requestLocation()
         notificationForKeyboard()
         activityIndicator.isHidden = true
     }
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         if locationManager.authorizationStatus == .restricted || locationManager.authorizationStatus == .denied {
-//            let ac = UIAlertController(title: "Allow 'SimpleWeather' to access yout location in the device Settings", message: nil, preferredStyle: .alert)
-//            ac.addAction(UIAlertAction(title: "OK", style: .cancel))
-//            self.present(ac, animated: true)
             showErrorAlert(title: "Allow 'SimpleWeather' to access yout location in the device Settings")
         } else {
         locationManager.requestLocation()
@@ -61,8 +61,8 @@ class WeatherViewController: UIViewController {
         self.view.frame.origin.y = 0
     }
     
-    func showErrorAlert(title: String) {
-        let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    private func showErrorAlert(title: String, message: String? = nil) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .cancel))
         self.present(ac, animated: true)
     }
@@ -117,7 +117,6 @@ extension WeatherViewController: CLLocationManagerDelegate {
         }
     }
     
-
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
         switch status {
@@ -162,14 +161,19 @@ extension WeatherViewController: WeatherServiceDelegate {
 
     func didFailWithError(_ weatherService: WeatherService, error: ServiceError) {
         DispatchQueue.main.async {
-        let message: String
-        switch error {
-        case .network:
-            message = "No internet connection"
-        case .json:
-            message = "Problem parsing JSON"
-        }
-            self.showErrorAlert(title: message)
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+            let title: String
+            let message: String
+            switch error {
+            case .network:
+                title = "No internet connection"
+                message = "Please check your internet connection"
+            case .json:
+                title = "Please enter valid city name"
+                message = ""
+            }
+                self.showErrorAlert(title: title, message: message)
         }
     }
 }
