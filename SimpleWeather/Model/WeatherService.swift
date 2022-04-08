@@ -8,10 +8,14 @@
 import UIKit
 import CoreLocation
 
+enum ServiceError {
+    case network
+    case json
+}
+
 protocol WeatherServiceDelegate {
     func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherModel)
-    func didFailWithError(error: Error)
-    func didShowActivityIndicator()
+    func didFailWithError(_ weatherService: WeatherService, error: ServiceError)
 }
 
 struct WeatherService {
@@ -35,12 +39,12 @@ struct WeatherService {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
                 if let error = error {
-                    self.delegate?.didFailWithError(error: error)
+                    self.delegate?.didFailWithError(self, error: ServiceError.network)
+                    print(error)
                 }
                 if let data = data {
                     if let weather = parseJSON(with: data) {
                         self.delegate?.didUpdateWeather(self, weather: weather)
-                        self.delegate?.didShowActivityIndicator()
                     }
                 }
             }
@@ -59,6 +63,7 @@ struct WeatherService {
             return weaterModel
         } catch {
             print(error)
+            delegate?.didFailWithError(self, error: ServiceError.json)
         }
         return nil
     }

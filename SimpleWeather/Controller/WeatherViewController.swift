@@ -7,7 +7,6 @@
 
 import UIKit
 import CoreLocation
-import CoreLocationUI
 
 class WeatherViewController: UIViewController {
     
@@ -36,8 +35,15 @@ class WeatherViewController: UIViewController {
     }
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
+        if locationManager.authorizationStatus == .restricted || locationManager.authorizationStatus == .denied {
+//            let ac = UIAlertController(title: "Allow 'SimpleWeather' to access yout location in the device Settings", message: nil, preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+//            self.present(ac, animated: true)
+            showErrorAlert(title: "Allow 'SimpleWeather' to access yout location in the device Settings")
+        } else {
         locationManager.requestLocation()
         Haptics.playLightImpact()
+        }
     }
     
     private func notificationForKeyboard() {
@@ -54,6 +60,12 @@ class WeatherViewController: UIViewController {
     @objc func keyboardWillHide(notification: NSNotification) {
         self.view.frame.origin.y = 0
     }
+    
+    func showErrorAlert(title: String) {
+        let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(ac, animated: true)
+    }
 }
 
 // MARK: - UITextfield Delegate Methods
@@ -61,8 +73,8 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController: UITextFieldDelegate {
     
     @IBAction func searchButtonTapped(_ sender: UIButton) {
-        searchTextField.endEditing(true)
-        Haptics.playLightImpact()
+            searchTextField.endEditing(true)
+            Haptics.playLightImpact()
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -94,7 +106,9 @@ extension WeatherViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             activityIndicator.isHidden = false
-            activityIndicator.startAnimating()
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
             
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
@@ -102,14 +116,39 @@ extension WeatherViewController: CLLocationManagerDelegate {
             weatherService.fetchWeather(latitude: lat, longitude: lon)
         }
     }
+    
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
+        switch status {
+        case .notDetermined:
+            print("notDetermined")
+        case .restricted:
+            print("restricted")
+        case .denied:
+            print("denied")
+        case .authorizedAlways:
+            print("authorizedAlways")
+            manager.requestLocation()
+        case .authorizedWhenInUse:
+            print("authorizedWhenInUse")
+            manager.requestLocation()
+        case .authorized:
+            print("authorized")
+            manager.requestLocation()
+        @unknown default:
+            fatalError()
+        }
+    }
      
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
+        showErrorAlert(title: "Could not get your location, please try again")
     }
 }
 //MARK: - WeatherServiceDelegate
 extension WeatherViewController: WeatherServiceDelegate {
-    
+  
     func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherModel) {
         DispatchQueue.main.async {
             self.tempLabel.text = weather.temperatureString
@@ -120,12 +159,17 @@ extension WeatherViewController: WeatherServiceDelegate {
             self.activityIndicator.isHidden = true
         }
     }
-    
-    func didFailWithError(error: Error) {
-        print(error)
-    }
-    
-    func didShowActivityIndicator() {
-        
+
+    func didFailWithError(_ weatherService: WeatherService, error: ServiceError) {
+        DispatchQueue.main.async {
+        let message: String
+        switch error {
+        case .network:
+            message = "No internet connection"
+        case .json:
+            message = "Problem parsing JSON"
+        }
+            self.showErrorAlert(title: message)
+        }
     }
 }
