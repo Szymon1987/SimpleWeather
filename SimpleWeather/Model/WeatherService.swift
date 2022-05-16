@@ -18,11 +18,30 @@ protocol WeatherServiceDelegate {
     func didFailWithError(_ weatherService: WeatherService, error: ServiceError)
 }
 
-struct WeatherService {
+// use the protocol for WeatherService to avoid tight coupling
 
-    private let url = API.openWeatherBaseUrl + API.openWeatherApiKey + "&units=metric"
+// break down the class, it should only be resposible for fetching the weather not parsing JSON
+
+// use dependency injection in the ViewController class
+
+// single place to inject SCENE DELEGATE
+
+// thing about proper naming
+
+protocol Service {
+    func fetchWeather(for cityName: String)
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
+}
+
+struct WeatherService: Service {
+    
+    // should this have "client property", so we could inject fake client to test it???? YT
+
+    private let url = API.openWeatherBaseUrl + API.openWeatherApiKey + API.inCelcius
     
     var delegate: WeatherServiceDelegate?
+//    private let session: URLSession
+//    init(session: URLSessionProtocol)
     
     public func fetchWeather(for cityName: String) {
         let urlString = "\(url)&q=\(cityName)"
@@ -51,7 +70,7 @@ struct WeatherService {
             task.resume()
         }
     }
-
+// use closure here to send the weather
     private func parseJSON(with data: Data) -> WeatherModel? {
         let decoder = JSONDecoder()
         do {

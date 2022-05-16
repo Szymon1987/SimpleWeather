@@ -9,9 +9,31 @@ import UIKit
 import CoreLocation
 
 class WeatherViewController: UIViewController {
+
     
-    private var weatherService = WeatherService()
+    // property inection. We can't inject in the init() as we are using storyboard in the project. With init() it safer, we use "let" instead of "var" which means we can't change it later by accident which is safer EXMPLE
+    
+    
+    // let service: Service
+    
+    // init(service: Service) {
+    //      self.service = service
+    //
+    //   }
+    //
+    
+    var weatherService: Service!
     let locationManager = CLLocationManager()
+    
+    
+    init() {
+        self.weatherService = WeatherService()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - IBOutlets
     
@@ -28,9 +50,10 @@ class WeatherViewController: UIViewController {
     }
     
     private func setup() {
+        
         locationManager.delegate = self
         searchTextField.delegate = self
-        weatherService.delegate = self
+//        weatherService.delegate = self
         locationManager.requestWhenInUseAuthorization()
 //        locationManager.requestLocation()
         notificationForKeyboard()
