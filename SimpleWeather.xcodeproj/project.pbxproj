@@ -10,7 +10,7 @@
 		AD44A6722800B197007C0463 /* SimpleWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44A6712800B197007C0463 /* SimpleWeatherTests.swift */; };
 		AD44A67B2800B6D6007C0463 /* WeatherServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44A6782800B1F6007C0463 /* WeatherServiceTests.swift */; };
 		AD491F6827FF2A0D006F0585 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD491F6727FF2A0D006F0585 /* Haptic.swift */; };
-		AD8422A0282C4A9900518D72 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0405327FD8EE100D8AC4A /* WeatherService.swift */; };
+		AD8422A0282C4A9900518D72 /* WeatherApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0405327FD8EE100D8AC4A /* WeatherApiService.swift */; };
 		ADB0403627FC930A00D8AC4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403527FC930A00D8AC4A /* AppDelegate.swift */; };
 		ADB0403827FC930A00D8AC4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403727FC930A00D8AC4A /* SceneDelegate.swift */; };
 		ADB0403A27FC930A00D8AC4A /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403927FC930A00D8AC4A /* WeatherViewController.swift */; };
@@ -20,7 +20,7 @@
 		ADB0404A27FCA03E00D8AC4A /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0404927FCA03E00D8AC4A /* Notes.swift */; };
 		ADB0404C27FCECB800D8AC4A /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0404B27FCECB700D8AC4A /* WeatherData.swift */; };
 		ADB0405227FCEE8A00D8AC4A /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0405127FCEE8A00D8AC4A /* API.swift */; };
-		ADB0405627FD990800D8AC4A /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0405527FD990800D8AC4A /* WeatherModel.swift */; };
+		ADB0405627FD990800D8AC4A /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0405527FD990800D8AC4A /* WeatherViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,8 +49,8 @@
 		ADB0404927FCA03E00D8AC4A /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		ADB0404B27FCECB700D8AC4A /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		ADB0405127FCEE8A00D8AC4A /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		ADB0405327FD8EE100D8AC4A /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
-		ADB0405527FD990800D8AC4A /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		ADB0405327FD8EE100D8AC4A /* WeatherApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApiService.swift; sourceTree = "<group>"; };
+		ADB0405527FD990800D8AC4A /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				ADB0404B27FCECB700D8AC4A /* WeatherData.swift */,
-				ADB0405327FD8EE100D8AC4A /* WeatherService.swift */,
-				ADB0405527FD990800D8AC4A /* WeatherModel.swift */,
+				ADB0405327FD8EE100D8AC4A /* WeatherApiService.swift */,
+				ADB0405527FD990800D8AC4A /* WeatherViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -261,13 +261,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADB0403A27FC930A00D8AC4A /* WeatherViewController.swift in Sources */,
-				AD8422A0282C4A9900518D72 /* WeatherService.swift in Sources */,
+				AD8422A0282C4A9900518D72 /* WeatherApiService.swift in Sources */,
 				AD491F6827FF2A0D006F0585 /* Haptic.swift in Sources */,
 				ADB0405227FCEE8A00D8AC4A /* API.swift in Sources */,
 				ADB0403627FC930A00D8AC4A /* AppDelegate.swift in Sources */,
 				ADB0403827FC930A00D8AC4A /* SceneDelegate.swift in Sources */,
 				ADB0404A27FCA03E00D8AC4A /* Notes.swift in Sources */,
-				ADB0405627FD990800D8AC4A /* WeatherModel.swift in Sources */,
+				ADB0405627FD990800D8AC4A /* WeatherViewModel.swift in Sources */,
 				ADB0404C27FCECB800D8AC4A /* WeatherData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

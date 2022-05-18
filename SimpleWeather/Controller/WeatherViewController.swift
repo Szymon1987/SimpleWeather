@@ -8,32 +8,27 @@
 import UIKit
 import CoreLocation
 
-class WeatherViewController: UIViewController {
 
-    
-    // property inection. We can't inject in the init() as we are using storyboard in the project. With init() it safer, we use "let" instead of "var" which means we can't change it later by accident which is safer EXMPLE
-    
-    
-    // let service: Service
-    
-    // init(service: Service) {
-    //      self.service = service
-    //
-    //   }
-    //
-    
-    var weatherService: Service!
-    let locationManager = CLLocationManager()
+class WeatherViewController: UIViewController {
     
     
-    init() {
-        self.weatherService = WeatherService()
-        super.init(nibName: nil, bundle: nil)
-    }
+    private let service = WeatherApiService()
+    private let locationManager = CLLocationManager()
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    private let service: WeatherService
+//    private let locationManager: CLLocationManager
+//
+//    init?(coder: NSCoder, weatherService: WeatherService, locationManager: CLLocationManager) {
+//
+//        self.service = weatherService
+//        self.locationManager = locationManager
+//        super.init(coder: coder)
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+
     
     //MARK: - IBOutlets
     
@@ -47,6 +42,16 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupBindings()
+    }
+    
+    private func setupBindings() {
+        service.weatherFailureClosure = { error in
+            print(error)
+        }
+        service.weatherSuccessClosure = { weatherModel in
+            print(weatherModel)
+        }
     }
     
     private func setup() {
@@ -116,7 +121,7 @@ extension WeatherViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let cityName = searchTextField.text {
             let trimmedCityName = cityName.trimmingCharacters(in: .whitespaces)
-            weatherService.fetchWeather(for: trimmedCityName)
+            service.fetchWeather(for: trimmedCityName)
         }
         searchTextField.text = ""
     }
@@ -136,7 +141,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
-            weatherService.fetchWeather(latitude: lat, longitude: lon)
+            service.fetchWeather(latitude: lat, longitude: lon)
         }
     }
     
@@ -169,34 +174,63 @@ extension WeatherViewController: CLLocationManagerDelegate {
     }
 }
 //MARK: - WeatherServiceDelegate
-extension WeatherViewController: WeatherServiceDelegate {
+//extension WeatherViewController: WeatherServiceDelegate {
+//    func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherViewModel) {
+//        DispatchQueue.main.async {
+//            self.tempLabel.text = weather.temperatureString
+//            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
+//            self.cityLabel.text = weather.cityName
+//            self.celciusLabel.text = "°C"
+//            self.activityIndicator.stopAnimating()
+//            self.activityIndicator.isHidden = true
+//        }
+//    }
+//
+//    func didFailWithError(_ weatherService: WeatherService, error: ServiceError) {
+//        DispatchQueue.main.async {
+//            self.activityIndicator.stopAnimating()
+//            self.activityIndicator.isHidden = true
+//            let title: String
+//            let message: String
+//            switch error {
+//            case .network:
+//                title = "No internet connection"
+//                message = "Please check your internet connection"
+//            case .json:
+//                title = "Please enter valid city name"
+//                message = ""
+//            }
+//                self.showErrorAlert(title: title, message: message)
+//        }
+//    }
+    
   
-    func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherModel) {
-        DispatchQueue.main.async {
-            self.tempLabel.text = weather.temperatureString
-            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
-            self.cityLabel.text = weather.cityName
-            self.celciusLabel.text = "°C"
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-        }
-    }
-
-    func didFailWithError(_ weatherService: WeatherService, error: ServiceError) {
-        DispatchQueue.main.async {
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            let title: String
-            let message: String
-            switch error {
-            case .network:
-                title = "No internet connection"
-                message = "Please check your internet connection"
-            case .json:
-                title = "Please enter valid city name"
-                message = ""
-            }
-                self.showErrorAlert(title: title, message: message)
-        }
-    }
-}
+//    func didUpdateWeather(_ weatherService: WeatherApiService, weather: WeatherViewModel) {
+//        DispatchQueue.main.async {
+//            self.tempLabel.text = weather.temperatureString
+//            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
+//            self.cityLabel.text = weather.cityName
+//            self.celciusLabel.text = "°C"
+//            self.activityIndicator.stopAnimating()
+//            self.activityIndicator.isHidden = true
+//        }
+//    }
+//
+//    func didFailWithError(_ weatherService: WeatherApiService, error: ServiceError) {
+//        DispatchQueue.main.async {
+//            self.activityIndicator.stopAnimating()
+//            self.activityIndicator.isHidden = true
+//            let title: String
+//            let message: String
+//            switch error {
+//            case .network:
+//                title = "No internet connection"
+//                message = "Please check your internet connection"
+//            case .json:
+//                title = "Please enter valid city name"
+//                message = ""
+//            }
+//                self.showErrorAlert(title: title, message: message)
+//        }
+//    }
+//}
