@@ -46,36 +46,38 @@ class WeatherViewController: UIViewController {
         setupBindings()
     }
     
-    public func setProperties() {
+    private func setProperties() {
         self.service = WeatherApiService()
         self.locationManager = CLLocationManager()
     }
     
     private func setupBindings() {
-        service.weatherServiceResponse = { (result) in
+        service.weatherServiceResponse = { [weak self] result in
             switch result {
-                
             case .success(let weather):
-                DispatchQueue.main.async {
-                    self.tempLabel.text = weather.temperatureString
-                    self.weatherImageView.image = UIImage(systemName: weather.conditionName)
-                    self.cityLabel.text = weather.cityName
-                    self.celciusLabel.text = "°C"
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                }
+                self?.updateUI(with: weather)
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self?.showErrorAlert(error)
+                }
             }
         }
-
+    }
+    
+    private func updateUI(with weather: WeatherModel) {
+        DispatchQueue.main.async {
+            self.tempLabel.text = weather.temperatureString
+            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
+            self.cityLabel.text = weather.cityName
+            self.celciusLabel.text = "°C"
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+        }
     }
     
     private func setup() {
-        
         locationManager.delegate = self
         searchTextField.delegate = self
-//        weatherService.delegate = self
         locationManager.requestWhenInUseAuthorization()
 //        locationManager.requestLocation()
         notificationForKeyboard()
@@ -84,7 +86,7 @@ class WeatherViewController: UIViewController {
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         if locationManager.authorizationStatus == .restricted || locationManager.authorizationStatus == .denied {
-            showErrorAlert(title: "Allow 'SimpleWeather' to access yout location in the device Settings")
+            showAlert(title: "Allow 'SimpleWeather' to access yout location in the device Settings")
         } else {
         locationManager.requestLocation()
         Haptics.playLightImpact()
@@ -106,8 +108,14 @@ class WeatherViewController: UIViewController {
         self.view.frame.origin.y = 0
     }
     
-    private func showErrorAlert(title: String, message: String? = nil) {
-        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    private func showErrorAlert(_ error: WeatherError) {
+        let ac = UIAlertController(title: error.rawValue, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(ac, animated: true)
+    }
+    
+    private func showAlert(title: String) {
+        let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .cancel))
         self.present(ac, animated: true)
     }
@@ -188,71 +196,9 @@ extension WeatherViewController: CLLocationManagerDelegate {
     }
      
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
-        showErrorAlert(title: "Could not get your location, please try again")
+        showErrorAlert(.invalidCityName)
     }
 }
-//MARK: - WeatherServiceDelegate
-//extension WeatherViewController: WeatherServiceDelegate {
-//    func didUpdateWeather(_ weatherService: WeatherService, weather: WeatherViewModel) {
-//        DispatchQueue.main.async {
-//            self.tempLabel.text = weather.temperatureString
-//            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
-//            self.cityLabel.text = weather.cityName
-//            self.celciusLabel.text = "°C"
-//            self.activityIndicator.stopAnimating()
-//            self.activityIndicator.isHidden = true
-//        }
-//    }
-//
-//    func didFailWithError(_ weatherService: WeatherService, error: ServiceError) {
-//        DispatchQueue.main.async {
-//            self.activityIndicator.stopAnimating()
-//            self.activityIndicator.isHidden = true
-//            let title: String
-//            let message: String
-//            switch error {
-//            case .network:
-//                title = "No internet connection"
-//                message = "Please check your internet connection"
-//            case .json:
-//                title = "Please enter valid city name"
-//                message = ""
-//            }
-//                self.showErrorAlert(title: title, message: message)
-//        }
-//    }
-    
-  
-//    func didUpdateWeather(_ weatherService: WeatherApiService, weather: WeatherViewModel) {
-//        DispatchQueue.main.async {
-//            self.tempLabel.text = weather.temperatureString
-//            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
-//            self.cityLabel.text = weather.cityName
-//            self.celciusLabel.text = "°C"
-//            self.activityIndicator.stopAnimating()
-//            self.activityIndicator.isHidden = true
-//        }
-//    }
-//
-//    func didFailWithError(_ weatherService: WeatherApiService, error: ServiceError) {
-//        DispatchQueue.main.async {
-//            self.activityIndicator.stopAnimating()
-//            self.activityIndicator.isHidden = true
-//            let title: String
-//            let message: String
-//            switch error {
-//            case .network:
-//                title = "No internet connection"
-//                message = "Please check your internet connection"
-//            case .json:
-//                title = "Please enter valid city name"
-//                message = ""
-//            }
-//                self.showErrorAlert(title: title, message: message)
-//        }
-//    }
-//}
 
 
 

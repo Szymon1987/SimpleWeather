@@ -11,42 +11,51 @@ import CoreLocation
 protocol WeatherService {
     func fetchWeather(for cityName: String)
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
-    var weatherServiceResponse: (((Result<WeatherModel, Error>)) -> Void)? { get set }
+    var weatherServiceResponse: (((Result<WeatherModel, WeatherError>)) -> Void)? { get set }
 }
 
 class WeatherApiService: WeatherService {
 
-    var weatherServiceResponse: (((Result<WeatherModel, Error>)) -> Void)?
+    var weatherServiceResponse: (((Result<WeatherModel, WeatherError>)) -> Void)?
     
     // should this have "client property", so we could inject fake client to test it???? YT
 
-    private let url = API.openWeatherBaseUrl + API.openWeatherApiKey + API.inCelcius
+    private let urlString = API.openWeatherBaseUrl + API.openWeatherApiKey + API.inCelcius
     
     
     func fetchWeather(for cityName: String) {
-        let urlString = "\(url)&q=\(cityName)"
-        performRequest(for: urlString)
+        let endpoint = "\(urlString)&q=\(cityName)"
+        performRequest(for: endpoint)
     }
     
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        let urlString = "\(url)&lat=\(latitude)&lon=\(longitude)"
-        performRequest(for: urlString)
+        let endpoint = "\(urlString)&lat=\(latitude)&lon=\(longitude)"
+        performRequest(for: endpoint)
     }
     
-    private func performRequest(for urlString: String) {
-        if let url = URL(string: urlString) {
+    private func performRequest(for endpoint: String) {
+        
+        guard let url = URL(string: endpoint) else {
+            return
+        }
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
-                if let error = error {
-                    self.weatherServiceResponse?(.failure(error))
+                if let _ = error {
+                    self.weatherServiceResponse?(.failure(.unableToComplete))
                 }
-                if let data = data {
-                    self.parseJSON(with: data)
+                guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                    self.weatherServiceResponse?(.failure(.invalidCityName))
+                    return
                 }
+                guard let data = data else {
+                    self.weatherServiceResponse?(.failure(.invalidData))
+                    return
+                }
+                self.parseJSON(with: data)
             }
             task.resume()
-        }
     }
+    
     private func parseJSON(with data: Data) {
         let decoder = JSONDecoder()
         do {
@@ -58,8 +67,7 @@ class WeatherApiService: WeatherService {
             let weatherModel = WeatherModel(cityName: name, temperature: temp, conditionId: id)
             self.weatherServiceResponse?(.success(weatherModel))
         } catch {
-            print(error)
-            self.weatherServiceResponse?(.failure(error))
+            self.weatherServiceResponse?(.failure(.invalidData))
         }
     }
 }
