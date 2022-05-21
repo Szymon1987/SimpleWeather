@@ -14,19 +14,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
-        
-        
-        
+//
 //        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateInitialViewController() as? WeatherViewController
 //
 //        window = UIWindow(windowScene: windowScene)
 //        window?.makeKeyAndVisible()
 //
-//
-//        let weatherService = WeatherApiService()
+//        let service = WeatherApiService()
 //        let coreLocation = CLLocationManager()
 //
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        window?.rootViewController = vc
+//        vc?.service = service
+//        vc?.locationManager = coreLocation
+//
+        
+        
+        
+
+//        window = UIWindow(windowScene: windowScene)
+//        let weatherService = WeatherApiService()
+//        let coreLocation = CLLocationManager()
+//        let bundle = Bundle(for: WeatherViewController.self)
+//        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
 //            let vc = storyboard.instantiateViewController(identifier: "Main") { (coder) -> UIViewController? in
 //                return WeatherViewController(
 //                    coder: coder,
@@ -35,25 +48,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            )
 //        }
 //        window?.rootViewController = vc
-        
-        
-    }
-    
-    
-
-    func sceneDidDisconnect(_ scene: UIScene) {
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
+//        window?.makeKeyAndVisible()
     }
 }
 

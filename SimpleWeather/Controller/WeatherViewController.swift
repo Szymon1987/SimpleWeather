@@ -11,13 +11,13 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
+
+//    private let service = WeatherApiService()
+//    private let locationManager = CLLocationManager()
     
-    private let service = WeatherApiService()
-    private let locationManager = CLLocationManager()
-    
-//    private let service: WeatherService
-//    private let locationManager: CLLocationManager
-//
+    var service: WeatherService!
+    var locationManager: CLLocationManager!
+
 //    init?(coder: NSCoder, weatherService: WeatherService, locationManager: CLLocationManager) {
 //
 //        self.service = weatherService
@@ -41,17 +41,34 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setProperties()
         setup()
         setupBindings()
     }
     
+    public func setProperties() {
+        self.service = WeatherApiService()
+        self.locationManager = CLLocationManager()
+    }
+    
     private func setupBindings() {
-        service.weatherFailureClosure = { error in
-            print(error)
+        service.weatherServiceResponse = { (result) in
+            switch result {
+                
+            case .success(let weather):
+                DispatchQueue.main.async {
+                    self.tempLabel.text = weather.temperatureString
+                    self.weatherImageView.image = UIImage(systemName: weather.conditionName)
+                    self.cityLabel.text = weather.cityName
+                    self.celciusLabel.text = "°C"
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
+                }
+            case .failure(let error):
+                print(error)
+            }
         }
-        service.weatherSuccessClosure = { weatherModel in
-            print(weatherModel)
-        }
+
     }
     
     private func setup() {
@@ -133,6 +150,8 @@ extension WeatherViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
+            
+            // activity indicator logic should be somewhere else
             activityIndicator.isHidden = false
             DispatchQueue.main.async {
                 self.activityIndicator.startAnimating()
@@ -234,3 +253,6 @@ extension WeatherViewController: CLLocationManagerDelegate {
 //        }
 //    }
 //}
+
+
+
