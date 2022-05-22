@@ -10,13 +10,9 @@ import CoreLocation
 
 
 class WeatherViewController: UIViewController {
-    
 
-//    private let service = WeatherApiService()
-//    private let locationManager = CLLocationManager()
-    
-    var service: WeatherService!
-    var locationManager: CLLocationManager!
+    private var service: WeatherService!
+    private var locationManager: CLLocationManager!
 
 //    init?(coder: NSCoder, weatherService: WeatherService, locationManager: CLLocationManager) {
 //
@@ -41,16 +37,10 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setProperties()
         setup()
         setupBindings()
     }
-    
-    private func setProperties() {
-        self.service = WeatherApiService()
-        self.locationManager = CLLocationManager()
-    }
-    
+
     private func setupBindings() {
         service.weatherServiceResponse = { [weak self] result in
             switch result {
@@ -201,4 +191,15 @@ extension WeatherViewController: CLLocationManagerDelegate {
 }
 
 
-
+extension WeatherViewController {
+    static func make(service: WeatherService, locatoinManager: CLLocationManager) -> WeatherViewController {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        
+        return sb.instantiateViewController(identifier: "WeatherViewController") {
+            let vc = WeatherViewController(coder: $0)
+            vc?.service = service
+            vc?.locationManager = locatoinManager
+            return vc
+        }
+    }
+}

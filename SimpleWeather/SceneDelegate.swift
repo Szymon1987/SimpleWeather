@@ -13,9 +13,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let _ = (scene as? UIWindowScene) else { return }
+//        guard let _ = (scene as? UIWindowScene) else { return }
 //
-//        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let service = WeatherApiService()
+        let coreLocationManager = CLLocationManager()
+        
+        let vc = WeatherViewController.make(service: service, locatoinManager: coreLocationManager)
+        
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = vc
+        window?.makeKeyAndVisible()
+        
 
 
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)

@@ -14,6 +14,7 @@ protocol WeatherService {
     var weatherServiceResponse: (((Result<WeatherModel, WeatherError>)) -> Void)? { get set }
 }
 
+
 class WeatherApiService: WeatherService {
 
     var weatherServiceResponse: (((Result<WeatherModel, WeatherError>)) -> Void)?
