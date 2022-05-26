@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let service = WeatherApiService()
         let coreLocationManager = CLLocationManager()
+        let location = Location()
         
         let vc = WeatherViewController.make(service: service, locationManager: coreLocationManager)
         

@@ -13,6 +13,7 @@ class WeatherViewController: UIViewController {
     
     private var service: WeatherService!
     var locationManager: CLLocationManager!
+    var location: Location!
     
     //    init?(coder: NSCoder, weatherService: WeatherService, locationManager: CLLocationManager) {
     //
@@ -38,21 +39,21 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-                setupBindings()
+        setupBindings()
     }
     
-        private func setupBindings() {
-            service.weatherServiceResponse = { [weak self] result in
-                switch result {
-                case .success(let weather):
-                    self?.updateUI(with: weather)
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.showErrorAlert(error)
-                    }
+    private func setupBindings() {
+        service.weatherServiceResponse = { [weak self] result in
+            switch result {
+            case .success(let weather):
+                self?.updateUI(with: weather)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.showErrorAlert(error)
                 }
             }
         }
+    }
     
     
     private func updateUI(with weather: WeatherModel) {
@@ -138,16 +139,16 @@ extension WeatherViewController: UITextFieldDelegate {
         if let cityName = searchTextField.text {
             let trimmedCityName = cityName.trimmingCharacters(in: .whitespaces)
             service.fetchWeather(for: trimmedCityName)
-//            service.fetchWeather(for: trimmedCityName) { [weak self] result in
-//                switch result {
-//                case .success(let weather):
-//                    self?.updateUI(with: weather)
-//                case .failure(let error):
-//                    DispatchQueue.main.async {
-//                        self?.showErrorAlert(error)
-//                    }
-//                }
-//            }
+            //            service.fetchWeather(for: trimmedCityName) { [weak self] result in
+            //                switch result {
+            //                case .success(let weather):
+            //                    self?.updateUI(with: weather)
+            //                case .failure(let error):
+            //                    DispatchQueue.main.async {
+            //                        self?.showErrorAlert(error)
+            //                    }
+            //                }
+            //            }
         }
         searchTextField.text = ""
     }
@@ -167,17 +168,17 @@ extension WeatherViewController: CLLocationManagerDelegate {
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
-                        service.fetchWeather(latitude: lat, longitude: lon)
-//            service.fetchWeather(latitude: lat, longitude: lon) { [weak self] result in
-//                switch result {
-//                case .success(let weather):
-//                    self?.updateUI(with: weather)
-//                case .failure(let error):
-//                    DispatchQueue.main.async {
-//                        self?.showErrorAlert(error)
-//                    }
-//                }
-//            }
+            service.fetchWeather(latitude: lat, longitude: lon)
+            //            service.fetchWeather(latitude: lat, longitude: lon) { [weak self] result in
+            //                switch result {
+            //                case .success(let weather):
+            //                    self?.updateUI(with: weather)
+            //                case .failure(let error):
+            //                    DispatchQueue.main.async {
+            //                        self?.showErrorAlert(error)
+            //                    }
+            //                }
+            //            }
         }
     }
     
@@ -208,7 +209,6 @@ extension WeatherViewController: CLLocationManagerDelegate {
         showErrorAlert(.invalidCityName)
     }
 }
-
 
 extension WeatherViewController {
     static func make(service: WeatherService, locationManager: CLLocationManager) -> WeatherViewController {
