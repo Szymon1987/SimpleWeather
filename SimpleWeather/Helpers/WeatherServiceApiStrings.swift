@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct API {
+struct WeatherServiceApiStrings {
     
     static let openWeatherBaseUrl = "https://api.openweathermap.org/data/2.5/weather?appid="
     static let openWeatherApiKey = "aa4a676216f9b5dc4ff27c58beff9360"

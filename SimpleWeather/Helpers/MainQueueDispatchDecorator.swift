@@ -6,17 +6,21 @@
 //
 
 import Foundation
-
+import CoreLocation
+//
 //final class MainQueueDispatchDecorator: WeatherService {
+//    
+//    let decoratee: WeatherService
+//    
+//    init(_ decoratee: WeatherService) {
+//        self.decoratee = decoratee
+//    }
 //    func fetchWeather(for cityName: String) {
-//        <#code#>
+//        
 //    }
 //
 //    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-//        <#code#>
+//         
 //    }
-//
-//    var weatherServiceResponse: (((Result<WeatherModel, WeatherError>)) -> Void)?
-//
 //
 //}

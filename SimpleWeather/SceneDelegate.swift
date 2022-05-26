@@ -10,8 +10,8 @@ import CoreLocation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    var window: UIWindow?
 
+    var window: UIWindow?
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 //        guard let _ = (scene as? UIWindowScene) else { return }
 //
@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let service = WeatherApiService()
         let coreLocationManager = CLLocationManager()
         
-        let vc = WeatherViewController.make(service: service, locatoinManager: coreLocationManager)
+        let vc = WeatherViewController.make(service: service, locationManager: coreLocationManager)
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = vc

@@ -10,21 +10,21 @@ import CoreLocation
 
 
 class WeatherViewController: UIViewController {
-
+    
     private var service: WeatherService!
-    private var locationManager: CLLocationManager!
-
-//    init?(coder: NSCoder, weatherService: WeatherService, locationManager: CLLocationManager) {
-//
-//        self.service = weatherService
-//        self.locationManager = locationManager
-//        super.init(coder: coder)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-
+    var locationManager: CLLocationManager!
+    
+    //    init?(coder: NSCoder, weatherService: WeatherService, locationManager: CLLocationManager) {
+    //
+    //        self.service = weatherService
+    //        self.locationManager = locationManager
+    //        super.init(coder: coder)
+    //    }
+    //
+    //    required init?(coder: NSCoder) {
+    //        fatalError("init(coder:) has not been implemented")
+    //    }
+    
     
     //MARK: - IBOutlets
     
@@ -38,21 +38,22 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setupBindings()
+                setupBindings()
     }
-
-    private func setupBindings() {
-        service.weatherServiceResponse = { [weak self] result in
-            switch result {
-            case .success(let weather):
-                self?.updateUI(with: weather)
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.showErrorAlert(error)
+    
+        private func setupBindings() {
+            service.weatherServiceResponse = { [weak self] result in
+                switch result {
+                case .success(let weather):
+                    self?.updateUI(with: weather)
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.showErrorAlert(error)
+                    }
                 }
             }
         }
-    }
+    
     
     private func updateUI(with weather: WeatherModel) {
         DispatchQueue.main.async {
@@ -69,7 +70,7 @@ class WeatherViewController: UIViewController {
         locationManager.delegate = self
         searchTextField.delegate = self
         locationManager.requestWhenInUseAuthorization()
-//        locationManager.requestLocation()
+        //        locationManager.requestLocation()
         notificationForKeyboard()
         activityIndicator.isHidden = true
     }
@@ -78,8 +79,8 @@ class WeatherViewController: UIViewController {
         if locationManager.authorizationStatus == .restricted || locationManager.authorizationStatus == .denied {
             showAlert(title: "Allow 'SimpleWeather' to access yout location in the device Settings")
         } else {
-        locationManager.requestLocation()
-        Haptics.playLightImpact()
+            locationManager.requestLocation()
+            Haptics.playLightImpact()
         }
     }
     
@@ -116,8 +117,8 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController: UITextFieldDelegate {
     
     @IBAction func searchButtonTapped(_ sender: UIButton) {
-            searchTextField.endEditing(true)
-            Haptics.playLightImpact()
+        searchTextField.endEditing(true)
+        Haptics.playLightImpact()
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -137,6 +138,16 @@ extension WeatherViewController: UITextFieldDelegate {
         if let cityName = searchTextField.text {
             let trimmedCityName = cityName.trimmingCharacters(in: .whitespaces)
             service.fetchWeather(for: trimmedCityName)
+//            service.fetchWeather(for: trimmedCityName) { [weak self] result in
+//                switch result {
+//                case .success(let weather):
+//                    self?.updateUI(with: weather)
+//                case .failure(let error):
+//                    DispatchQueue.main.async {
+//                        self?.showErrorAlert(error)
+//                    }
+//                }
+//            }
         }
         searchTextField.text = ""
     }
@@ -148,17 +159,25 @@ extension WeatherViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            
             // activity indicator logic should be somewhere else
             activityIndicator.isHidden = false
             DispatchQueue.main.async {
                 self.activityIndicator.startAnimating()
             }
-            
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
-            service.fetchWeather(latitude: lat, longitude: lon)
+                        service.fetchWeather(latitude: lat, longitude: lon)
+//            service.fetchWeather(latitude: lat, longitude: lon) { [weak self] result in
+//                switch result {
+//                case .success(let weather):
+//                    self?.updateUI(with: weather)
+//                case .failure(let error):
+//                    DispatchQueue.main.async {
+//                        self?.showErrorAlert(error)
+//                    }
+//                }
+//            }
         }
     }
     
@@ -184,7 +203,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
             fatalError()
         }
     }
-     
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         showErrorAlert(.invalidCityName)
     }
@@ -192,14 +211,15 @@ extension WeatherViewController: CLLocationManagerDelegate {
 
 
 extension WeatherViewController {
-    static func make(service: WeatherService, locatoinManager: CLLocationManager) -> WeatherViewController {
+    static func make(service: WeatherService, locationManager: CLLocationManager) -> WeatherViewController {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         
         return sb.instantiateViewController(identifier: "WeatherViewController") {
             let vc = WeatherViewController(coder: $0)
             vc?.service = service
-            vc?.locationManager = locatoinManager
+            vc?.locationManager = locationManager
             return vc
         }
     }
 }
+
