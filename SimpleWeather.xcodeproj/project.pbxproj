@@ -127,8 +127,8 @@
 				ADB0404B27FCECB700D8AC4A /* WeatherData.swift */,
 				ADB0405527FD990800D8AC4A /* WeatherModel.swift */,
 				ADB0405327FD8EE100D8AC4A /* WeatherApiService.swift */,
-				ADAB6C10283FCD8E00324376 /* Location.swift */,
 				ADAB6C12283FCF6000324376 /* LocationService.swift */,
+				ADAB6C10283FCD8E00324376 /* Location.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

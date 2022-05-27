@@ -8,32 +8,42 @@
 import Foundation
 import CoreLocation
 
+enum LocationError: String, Error {
+    case locationError = "Error fetching location. Please try again"
+}
+
 class LocationService: NSObject, CLLocationManagerDelegate {
+
+    private let locationManager = CLLocationManager()
+    var actionForLocacion: ((CLLocationDegrees, CLLocationDegrees) -> Void)?
+//    var newActionForLocation: ((Result<Location, LocationError>) -> Void)?
     
-    var locationManager = CLLocationManager()
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            // activity indicator logic should be somewhere else
-            activityIndicator.isHidden = false
-            DispatchQueue.main.async {
-                self.activityIndicator.startAnimating()
-            }
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
-            service.fetchWeather(latitude: lat, longitude: lon)
-            //            service.fetchWeather(latitude: lat, longitude: lon) { [weak self] result in
-            //                switch result {
-            //                case .success(let weather):
-            //                    self?.updateUI(with: weather)
-            //                case .failure(let error):
-            //                    DispatchQueue.main.async {
-            //                        self?.showErrorAlert(error)
-            //                    }
-            //                }
-            //            }
+            actionForLocacion?(lat,lon)
+//            let location = Location(latitude: lat, longitude: lon)
+//            newActionForLocation?(.success(location))
         }
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("Error")
+//        newActionForLocation?(.failure(.locationError))
+    }
+    
+    public func requestLocation() {
+        locationManager.requestLocation()
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -57,10 +67,6 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         @unknown default:
             fatalError()
         }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        showErrorAlert(.invalidCityName)
     }
 }
     

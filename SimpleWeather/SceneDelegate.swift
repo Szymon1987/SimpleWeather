@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import CoreLocation
+//import CoreLocation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -18,10 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let service = WeatherApiService()
-        let coreLocationManager = CLLocationManager()
-        let location = Location()
+//        let locationService = LocationService()
+//        let coreLocationManager = CLLocationManager()
+//        let location = Location()
         
-        let vc = WeatherViewController.make(service: service, locationManager: coreLocationManager)
+        let vc = WeatherViewController.make(service: service)
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = vc
