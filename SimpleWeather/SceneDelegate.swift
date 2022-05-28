@@ -17,9 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let service = WeatherApiService()
-//        let locationService = LocationService()
-//        let coreLocationManager = CLLocationManager()
+        let locationService = LocationService()
+        let urlString = WeatherServiceApiStrings.openWeatherBaseUrl + WeatherServiceApiStrings.openWeatherApiKey + WeatherServiceApiStrings.inCelcius
+        let service = WeatherApiService(locatinService: locationService, urlString: urlString)
+
 //        let location = Location()
         
         let vc = WeatherViewController.make(service: service)
@@ -27,7 +28,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
-        
 
 
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)

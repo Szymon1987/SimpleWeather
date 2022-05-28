@@ -15,14 +15,15 @@ protocol WeatherService {
 
 class WeatherApiService: WeatherService {
    
-    private let locationService = LocationService()
-    
-    // should this have "client property", so we could inject fake client to test it???? YT
-
-    private let urlString = WeatherServiceApiStrings.openWeatherBaseUrl + WeatherServiceApiStrings.openWeatherApiKey + WeatherServiceApiStrings.inCelcius
+    private let locationService: LocationService
+    private let urlString: String
     
     var weatherServiceResponse: ((Result<WeatherModel, WeatherError>) -> Void)?
-    
+
+    init(locatinService: LocationService, urlString: String) {
+        self.locationService = locatinService
+        self.urlString = urlString
+    }
     
     func fetchWeather(for cityName: String) {
         let endpoint = "\(urlString)&q=\(cityName)"
