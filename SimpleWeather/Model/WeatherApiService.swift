@@ -32,10 +32,14 @@ class WeatherApiService: WeatherService {
     
     public func fetchWeather() {
         locationService.requestLocation()
-        locationService.actionForLocacion = { [weak self] latitude, longitude in
-            guard let strongSelf = self else { return }
-            let endpoint = "\(strongSelf.urlString)&lat=\(latitude)&lon=\(longitude)"
-            strongSelf.performRequest(for: endpoint)
+        locationService.actionForLocation = { result in
+            switch result {
+            case .success(let location):
+                let endpoint = "\(self.urlString)&lat=\(location.latitude)&lon=\(location.longitude)"
+                self.performRequest(for: endpoint)
+            case .failure(let error):
+                self.weatherServiceResponse?(.failure(error))
+            }
         }
     }
     

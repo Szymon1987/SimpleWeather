@@ -6,8 +6,6 @@
 //
 
 import UIKit
-//import CoreLocation
-
 
 class WeatherViewController: UIViewController {
     
@@ -25,7 +23,6 @@ class WeatherViewController: UIViewController {
         searchTextField.delegate = self
         notificationForKeyboard()
         activityIndicator.isHidden = true
-        
         setupBindings()
         service.fetchWeather()
     }
@@ -56,14 +53,6 @@ class WeatherViewController: UIViewController {
 
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         Haptics.playLightImpact()
-        
-        
-//        if locationManager.authorizationStatus == .restricted || locationManager.authorizationStatus == .denied {
-//            showAlert(title: "Allow 'SimpleWeather' to access yout location in the device Settings")
-//        } else {
-//            locationManager.requestLocation()
-
-//        }
         service.fetchWeather()
     }
     

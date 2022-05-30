@@ -8,69 +8,85 @@
 import Foundation
 import CoreLocation
 
-enum LocationError: String, Error {
-    case locationError = "Error fetching location. Please try again"
+protocol LocationManager {
+    var delegate: CLLocationManagerDelegate? { get set }
+    var authorizationStatus: CLAuthorizationStatus { get }
+    func requestWhenInUseAuthorization()
+    func requestLocation()
+    func stopUpdatingLocation()
+
 }
 
 class LocationService: NSObject, CLLocationManagerDelegate {
 
-    private let locationManager = CLLocationManager()
-    var actionForLocacion: ((CLLocationDegrees, CLLocationDegrees) -> Void)?
-//    var newActionForLocation: ((Result<Location, LocationError>) -> Void)?
-    
-    override init() {
+    private var locationManager: LocationManager
+    var actionForLocation: ((Result<Location, WeatherError>) -> Void)?
+//    var allowLocationAccess: ((String) -> Void)?
+        
+    init(locationManager: LocationManager) {
+        self.locationManager = locationManager
         super.init()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        self.locationManager.delegate = self
+//        locationManager.requestWhenInUseAuthorization()
+//        locationManager.requestLocation()
     }
     
+    public func requestLocation() {
+        locationManager.requestWhenInUseAuthorization()
+        let status = locationManager.authorizationStatus
+        if (status == .restricted || status == .denied) {
+            actionForLocation?(.failure(.allowAccess))
+//            allowLocationAccess?("Allow 'SimpleWeather' to access yout location in the device Settings")
+            return
+        } else if (status == .notDetermined) {
+            locationManager.requestWhenInUseAuthorization()
+            return
+        } else {
+            locationManager.requestLocation()
+        }
+    }
+    
+//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+//        let status = manager.authorizationStatus
+//        switch status {
+//        case .notDetermined:
+//            print("notDetermined")
+//        case .restricted:
+//            print("restricted")
+//        case .denied:
+//            print("denied")
+//        case .authorizedAlways:
+//            print("authorizedAlways")
+//            manager.requestLocation()
+//        case .authorizedWhenInUse:
+//            print("authorizedWhenInUse")
+//            manager.requestLocation()
+//        case .authorized:
+//            print("authorized")
+//            manager.requestLocation()
+//        @unknown default:
+//            fatalError()
+//        }
+//    }
+}
+
+extension LocationService {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
-            actionForLocacion?(lat,lon)
-//            let location = Location(latitude: lat, longitude: lon)
-//            newActionForLocation?(.success(location))
+            let location = Location(latitude: lat, longitude: lon)
+            actionForLocation?(.success(location))
         }
     }
-    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            print("Error")
-//        newActionForLocation?(.failure(.locationError))
-    }
-    
-    public func requestLocation() {
-        locationManager.requestLocation()
-    }
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status = manager.authorizationStatus
-        switch status {
-        case .notDetermined:
-            print("notDetermined")
-        case .restricted:
-            print("restricted")
-        case .denied:
-            print("denied")
-        case .authorizedAlways:
-            print("authorizedAlways")
-            manager.requestLocation()
-        case .authorizedWhenInUse:
-            print("authorizedWhenInUse")
-            manager.requestLocation()
-        case .authorized:
-            print("authorized")
-            manager.requestLocation()
-        @unknown default:
-            fatalError()
-        }
+        actionForLocation?(.failure(.locationError))
     }
 }
-    
 
+extension CLLocationManager: LocationManager{}
 
 
 
