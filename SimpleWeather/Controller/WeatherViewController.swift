@@ -22,9 +22,9 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         searchTextField.delegate = self
         notificationForKeyboard()
-        activityIndicator.isHidden = true
         setupBindings()
         service.fetchWeather()
+        showSpinner()
     }
     
     private func setupBindings() {
@@ -36,8 +36,19 @@ class WeatherViewController: UIViewController {
                 case .failure(let error):
                     self?.showErrorAlert(error)
                 }
+                self?.hideSpinner()
             }
         }
+    }
+    
+    private func showSpinner() {
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
+    }
+    
+    private func hideSpinner() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
     }
     
     private func guaranteeMainThread(_ work: @escaping () -> Void) {
@@ -53,13 +64,12 @@ class WeatherViewController: UIViewController {
         weatherImageView.image = UIImage(systemName: weather.conditionName)
         cityLabel.text = weather.cityName
         celciusLabel.text = "°C"
-        activityIndicator.stopAnimating()
-        activityIndicator.isHidden = true
     }
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         Haptics.playLightImpact()
         service.fetchWeather()
+        showSpinner()
     }
     
     private func notificationForKeyboard() {
@@ -95,6 +105,7 @@ extension WeatherViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if searchTextField.text != "" {
+            showSpinner()
             return true
         } else {
             searchTextField.placeholder = "Type the city name here"
