@@ -19,8 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let locationService = LocationService(locationManager: locationManager)
         let urlString = WeatherServiceApiStrings.openWeatherBaseUrl + WeatherServiceApiStrings.openWeatherApiKey + WeatherServiceApiStrings.inCelcius
         let service = WeatherApiService(locationService: locationService, urlString: urlString)
-        let mainQue = MainQueueDispatchDecorator(service)
-        
         let vc = WeatherViewController.make(service: service)
         
         window = UIWindow(windowScene: windowScene)

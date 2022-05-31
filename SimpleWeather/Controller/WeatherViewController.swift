@@ -9,7 +9,6 @@ import UIKit
 
 class WeatherViewController: UIViewController {
     
-//    private var service: WeatherService!
     private var service: WeatherService!
     
     @IBOutlet var weatherImageView: UIImageView!
@@ -35,13 +34,13 @@ class WeatherViewController: UIViewController {
                 case .success(let weather):
                     self?.updateUI(with: weather)
                 case .failure(let error):
-                        self?.showErrorAlert(error)
+                    self?.showErrorAlert(error)
                 }
             }
         }
     }
     
-    func guaranteeMainThread(_ work: @escaping () -> Void) {
+    private func guaranteeMainThread(_ work: @escaping () -> Void) {
         if Thread.isMainThread {
             work()
         } else {
@@ -83,12 +82,6 @@ class WeatherViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "OK", style: .cancel))
         self.present(ac, animated: true)
     }
-    
-    private func showAlert(title: String) {
-        let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
-        self.present(ac, animated: true)
-    }
 }
 
 // MARK: - UITextfield Delegate Methods
@@ -98,7 +91,6 @@ extension WeatherViewController: UITextFieldDelegate {
     @IBAction func searchButtonTapped(_ sender: UIButton) {
         Haptics.playLightImpact()
         searchTextField.endEditing(true)
-        
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
