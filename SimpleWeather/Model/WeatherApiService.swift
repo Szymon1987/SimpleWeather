@@ -7,21 +7,23 @@
 
 import UIKit
 
+
 protocol WeatherService {
     func fetchWeather(for cityName: String)
     func fetchWeather()
-    var weatherServiceResponse: ((Result<WeatherModel, WeatherError>) -> Void)? { get set }
+    var completion: ((Result<WeatherModel, WeatherError>) -> Void)? { get set }
 }
 
+
 class WeatherApiService: WeatherService {
-   
+ 
     private let locationService: LocationService
     private let urlString: String
     
-    var weatherServiceResponse: ((Result<WeatherModel, WeatherError>) -> Void)?
+    var completion: ((Result<WeatherModel, WeatherError>) -> Void)?
 
-    init(locatinService: LocationService, urlString: String) {
-        self.locationService = locatinService
+    init(locationService: LocationService, urlString: String) {
+        self.locationService = locationService
         self.urlString = urlString
     }
     
@@ -32,13 +34,13 @@ class WeatherApiService: WeatherService {
     
     public func fetchWeather() {
         locationService.requestLocation()
-        locationService.actionForLocation = { result in
+        locationService.completion = { result in
             switch result {
             case .success(let location):
                 let endpoint = "\(self.urlString)&lat=\(location.latitude)&lon=\(location.longitude)"
                 self.performRequest(for: endpoint)
             case .failure(let error):
-                self.weatherServiceResponse?(.failure(error))
+                self.completion?(.failure(error))
             }
         }
     }
@@ -51,14 +53,14 @@ class WeatherApiService: WeatherService {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
                 if let _ = error {
-                    self.weatherServiceResponse?(.failure(.unableToComplete))
+                    self.completion?(.failure(.unableToComplete))
                 }
                 guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                    self.weatherServiceResponse?(.failure(.invalidCityName))
+                    self.completion?(.failure(.invalidCityName))
                     return
                 }
                 guard let data = data else {
-                    self.weatherServiceResponse?(.failure(.invalidData))
+                    self.completion?(.failure(.invalidData))
                     return
                 }
                 self.parseJSON(with: data)
@@ -75,10 +77,12 @@ class WeatherApiService: WeatherService {
             let id = decodedWeatherData.weather[0].id
 
             let weatherModel = WeatherModel(cityName: name, temperature: temp, conditionId: id)
-            self.weatherServiceResponse?(.success(weatherModel))
+            self.completion?(.success(weatherModel))
         } catch {
-            self.weatherServiceResponse?(.failure(.invalidData))
+            self.completion?(.failure(.invalidData))
         }
     }
 }
+
+
 

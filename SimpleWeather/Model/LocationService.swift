@@ -14,13 +14,12 @@ protocol LocationManager {
     func requestWhenInUseAuthorization()
     func requestLocation()
     func stopUpdatingLocation()
-
 }
 
 class LocationService: NSObject, CLLocationManagerDelegate {
 
     private var locationManager: LocationManager
-    var actionForLocation: ((Result<Location, WeatherError>) -> Void)?
+    var completion: ((Result<Location, WeatherError>) -> Void)?
 //    var allowLocationAccess: ((String) -> Void)?
         
     init(locationManager: LocationManager) {
@@ -35,7 +34,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         let status = locationManager.authorizationStatus
         if (status == .restricted || status == .denied) {
-            actionForLocation?(.failure(.allowAccess))
+            completion?(.failure(.allowAccess))
 //            allowLocationAccess?("Allow 'SimpleWeather' to access yout location in the device Settings")
             return
         } else if (status == .notDetermined) {
@@ -77,12 +76,12 @@ extension LocationService {
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             let location = Location(latitude: lat, longitude: lon)
-            actionForLocation?(.success(location))
+            completion?(.success(location))
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        actionForLocation?(.failure(.locationError))
+        completion?(.failure(.locationError))
     }
 }
 

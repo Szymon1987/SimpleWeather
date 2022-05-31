@@ -9,8 +9,9 @@ import UIKit
 
 class WeatherViewController: UIViewController {
     
+//    private var service: WeatherService!
     private var service: WeatherService!
-
+    
     @IBOutlet var weatherImageView: UIImageView!
     @IBOutlet var tempLabel: UILabel!
     @IBOutlet var celciusLabel: UILabel!
@@ -28,29 +29,35 @@ class WeatherViewController: UIViewController {
     }
     
     private func setupBindings() {
-        service.weatherServiceResponse = { [weak self] result in
-            switch result {
-            case .success(let weather):
-                self?.updateUI(with: weather)
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.showErrorAlert(error)
+        service.completion = { [weak self] result in
+            self?.guaranteeMainThread {
+                switch result {
+                case .success(let weather):
+                    self?.updateUI(with: weather)
+                case .failure(let error):
+                        self?.showErrorAlert(error)
                 }
             }
         }
     }
     
-    private func updateUI(with weather: WeatherModel) {
-        DispatchQueue.main.async {
-            self.tempLabel.text = weather.temperatureString
-            self.weatherImageView.image = UIImage(systemName: weather.conditionName)
-            self.cityLabel.text = weather.cityName
-            self.celciusLabel.text = "°C"
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
+    func guaranteeMainThread(_ work: @escaping () -> Void) {
+        if Thread.isMainThread {
+            work()
+        } else {
+            DispatchQueue.main.async(execute: work)
         }
     }
-
+    
+    private func updateUI(with weather: WeatherModel) {
+        tempLabel.text = weather.temperatureString
+        weatherImageView.image = UIImage(systemName: weather.conditionName)
+        cityLabel.text = weather.cityName
+        celciusLabel.text = "°C"
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+    
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         Haptics.playLightImpact()
         service.fetchWeather()

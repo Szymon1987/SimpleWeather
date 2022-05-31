@@ -6,21 +6,37 @@
 //
 
 import Foundation
-import CoreLocation
-//
-//final class MainQueueDispatchDecorator: WeatherService {
-//    
-//    let decoratee: WeatherService
-//    
-//    init(_ decoratee: WeatherService) {
-//        self.decoratee = decoratee
-//    }
-//    func fetchWeather(for cityName: String) {
-//        
-//    }
-//
-//    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-//         
-//    }
-//
-//}
+
+
+final class MainQueueDispatchDecorator: WeatherService {
+    func fetchWeather(for cityName: String) {}
+    func fetchWeather() {}
+    
+    
+    var completion: ((Result<WeatherModel, WeatherError>) -> Void)?
+    private var decoratee: WeatherService
+    
+    init(_ decoratee: WeatherService) {
+        self.decoratee = decoratee
+        setupBindings()
+    }
+    
+    
+    func setupBindings() {
+        decoratee.completion = { result in
+            self.guaranteeMainThread {
+                self.completion?(result)
+            }
+        }
+    }
+
+    func guaranteeMainThread(_ work: @escaping () -> Void) {
+        if Thread.isMainThread {
+            work()
+        } else {
+            DispatchQueue.main.async(execute: work)
+        }
+    }
+    
+
+}
