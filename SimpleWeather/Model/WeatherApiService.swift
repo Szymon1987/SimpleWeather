@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol WeatherService {
     func fetchWeather(for cityName: String)
     func fetchWeather()
@@ -17,12 +16,12 @@ protocol WeatherService {
 
 class WeatherApiService: WeatherService {
  
-    private let locationService: LocationService
+    private let locationService: LocationProvider
     private let urlString: String
     
     var completion: ((Result<WeatherModel, WeatherError>) -> Void)?
 
-    init(locationService: LocationService, urlString: String) {
+    init(locationService: LocationProvider, urlString: String) {
         self.locationService = locationService
         self.urlString = urlString
     }
@@ -33,8 +32,7 @@ class WeatherApiService: WeatherService {
     }
     
     public func fetchWeather() {
-        locationService.requestLocation()
-        locationService.completion = { result in
+        locationService.requestLocation { result in
             switch result {
             case .success(let location):
                 let endpoint = "\(self.urlString)&lat=\(location.latitude)&lon=\(location.longitude)"
@@ -46,7 +44,6 @@ class WeatherApiService: WeatherService {
     }
     
     private func performRequest(for endpoint: String) {
-
         guard let url = URL(string: endpoint) else {
             return
         }
@@ -75,7 +72,6 @@ class WeatherApiService: WeatherService {
             let name = decodedWeatherData.name
             let temp = decodedWeatherData.main.temp
             let id = decodedWeatherData.weather[0].id
-
             let weatherModel = WeatherModel(cityName: name, temperature: temp, conditionId: id)
             self.completion?(.success(weatherModel))
         } catch {

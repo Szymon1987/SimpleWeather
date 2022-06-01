@@ -39,14 +39,14 @@ struct WeatherModel {
 }
 
 
-//struct WeatherViewModel {
-//    let cityName: String
-//    let temperature: String
-//    let conditionName: String
-//
-//    init(weather: WeatherModel){
-//        cityName = weather.cityName
-//        temperature = String(format: "%.1f", weather.temperature)
-//        conditionName = weather.conditionName
-//    }
-//}
+struct WeatherViewModel {
+    let cityName: String
+    let temperature: String
+    let conditionName: String
+
+    init(weather: WeatherModel){
+        cityName = weather.cityName
+        temperature = String(format: "%.1f", weather.temperature)
+        conditionName = weather.conditionName
+    }
+}

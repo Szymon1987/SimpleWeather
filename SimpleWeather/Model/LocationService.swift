@@ -16,26 +16,29 @@ protocol LocationManager {
     func stopUpdatingLocation()
 }
 
-class LocationService: NSObject, CLLocationManagerDelegate {
+typealias LocationCompletionBlock = (Result<Location, WeatherError>) -> Void
+
+protocol LocationProvider {
+    func requestLocation(then: @escaping LocationCompletionBlock)
+}
+
+class LocationService: NSObject, LocationProvider {
 
     private var locationManager: LocationManager
-    var completion: ((Result<Location, WeatherError>) -> Void)?
-//    var allowLocationAccess: ((String) -> Void)?
+    var locationCompletionBlock: LocationCompletionBlock?
         
-    init(locationManager: LocationManager) {
+    init(locationManager: LocationManager = CLLocationManager()) {
         self.locationManager = locationManager
         super.init()
         self.locationManager.delegate = self
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.requestLocation()
     }
     
-    public func requestLocation() {
+    func requestLocation(then: @escaping LocationCompletionBlock) {
+        self.locationCompletionBlock = then
         locationManager.requestWhenInUseAuthorization()
         let status = locationManager.authorizationStatus
         if (status == .restricted || status == .denied) {
-            completion?(.failure(.allowAccess))
-//            allowLocationAccess?("Allow 'SimpleWeather' to access yout location in the device Settings")
+            then(.failure(.allowAccess))
             return
         } else if (status == .notDetermined) {
             locationManager.requestWhenInUseAuthorization()
@@ -44,7 +47,37 @@ class LocationService: NSObject, CLLocationManagerDelegate {
             locationManager.requestLocation()
         }
     }
+}
     
+extension LocationService: CLLocationManagerDelegate {
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            if let location = locations.last {
+                locationManager.stopUpdatingLocation()
+                let lat = location.coordinate.latitude
+                let lon = location.coordinate.longitude
+                let location = Location(latitude: lat, longitude: lon)
+                locationCompletionBlock?(.success(location))
+            } else {
+                locationCompletionBlock?(.failure(.locationError))
+            }
+        }
+
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            locationCompletionBlock?(.failure(.locationError))
+        }
+    }
+
+extension CLLocationManager: LocationManager {}
+
+
+
+
+
+
+
+
+
+
 //    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
 //        let status = manager.authorizationStatus
 //        switch status {
@@ -67,26 +100,4 @@ class LocationService: NSObject, CLLocationManagerDelegate {
 //            fatalError()
 //        }
 //    }
-}
-
-extension LocationService {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            locationManager.stopUpdatingLocation()
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
-            let location = Location(latitude: lat, longitude: lon)
-            completion?(.success(location))
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        completion?(.failure(.locationError))
-    }
-}
-
-extension CLLocationManager: LocationManager{}
-
-
-
 

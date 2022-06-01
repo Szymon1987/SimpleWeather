@@ -17,12 +17,13 @@ class WeatherViewController: UIViewController {
     @IBOutlet var cityLabel: UILabel!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var searchTextField: UITextField!
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBindings()
         searchTextField.delegate = self
         notificationForKeyboard()
-        setupBindings()
+        
         service.fetchWeather()
         showSpinner()
     }
@@ -60,9 +61,13 @@ class WeatherViewController: UIViewController {
     }
     
     private func updateUI(with weather: WeatherModel) {
-        tempLabel.text = weather.temperatureString
-        weatherImageView.image = UIImage(systemName: weather.conditionName)
-        cityLabel.text = weather.cityName
+        let vm = WeatherViewModel(weather: weather)
+        tempLabel.text = vm.temperature
+        weatherImageView.image = UIImage(systemName: vm.conditionName)
+        cityLabel.text = vm.cityName
+//        tempLabel.text = weather.temperatureString
+//        weatherImageView.image = UIImage(systemName: weather.conditionName)
+//        cityLabel.text = weather.cityName
         celciusLabel.text = "°C"
     }
     
