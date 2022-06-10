@@ -9,6 +9,7 @@ import XCTest
 @testable import SimpleWeather
 
 class LocationServiceTests: XCTestCase {
+    
 
     func test_locationManager_does_have_delegate() {
 

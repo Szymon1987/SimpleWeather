@@ -15,25 +15,27 @@ protocol LocationManager {
     func requestLocation()
     func stopUpdatingLocation()
 }
-
-typealias LocationCompletionBlock = (Result<Location, WeatherError>) -> Void
+// probably this needs to be decoupled form WeatherError
+typealias LocationCompletionBlock = (Result<Location, LocationError>) -> Void
 
 protocol LocationProvider {
-    func requestLocation(then: @escaping LocationCompletionBlock)
+    func provideLocation(then: @escaping LocationCompletionBlock)
 }
 
 class LocationService: NSObject, LocationProvider {
 
+// I don't understand why I can't make it "let" below?
     private var locationManager: LocationManager
     var locationCompletionBlock: LocationCompletionBlock?
-        
+    
+// is it ok to make location manager a default parameter?
     init(locationManager: LocationManager = CLLocationManager()) {
         self.locationManager = locationManager
         super.init()
         self.locationManager.delegate = self
     }
     
-    func requestLocation(then: @escaping LocationCompletionBlock) {
+    func provideLocation(then: @escaping LocationCompletionBlock) {
         self.locationCompletionBlock = then
         locationManager.requestWhenInUseAuthorization()
         let status = locationManager.authorizationStatus

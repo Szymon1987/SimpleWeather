@@ -20,11 +20,10 @@ class WeatherViewController: UIViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBindings()
         searchTextField.delegate = self
+        setupBindings()
         notificationForKeyboard()
-        
-        service.fetchWeather()
+        service.fetchWeatherForLocation()
         showSpinner()
     }
     
@@ -73,7 +72,7 @@ class WeatherViewController: UIViewController {
     
     @IBAction func locationButtonTapped(_ sender: UIButton) {
         Haptics.playLightImpact()
-        service.fetchWeather()
+        service.fetchWeatherForLocation()
         showSpinner()
     }
     
@@ -91,6 +90,8 @@ class WeatherViewController: UIViewController {
     @objc func keyboardWillHide(notification: NSNotification) {
         self.view.frame.origin.y = 0
     }
+    
+    // we need to handle LocationError type here as well
     
     private func showErrorAlert(_ error: WeatherError) {
         let ac = UIAlertController(title: error.rawValue, message: nil, preferredStyle: .alert)

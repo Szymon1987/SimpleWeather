@@ -9,42 +9,45 @@ import UIKit
 
 protocol WeatherService {
     func fetchWeather(for cityName: String)
-    func fetchWeather()
+    func fetchWeatherForLocation()
     var completion: ((Result<WeatherModel, WeatherError>) -> Void)? { get set }
 }
 
-
 class WeatherApiService: WeatherService {
  
-    private let locationService: LocationProvider
+    private let locationProvider: LocationProvider
     private let urlString: String
     
     var completion: ((Result<WeatherModel, WeatherError>) -> Void)?
 
-    init(locationService: LocationProvider, urlString: String) {
-        self.locationService = locationService
+    init(locationProvider: LocationProvider, urlString: String) {
+        self.locationProvider = locationProvider
         self.urlString = urlString
     }
     
-    func fetchWeather(for cityName: String) {
+    public func fetchWeather(for cityName: String) {
         let endpoint = "\(urlString)&q=\(cityName)"
         performRequest(for: endpoint)
     }
     
-    public func fetchWeather() {
-        locationService.requestLocation { result in
+    public func fetchWeatherForLocation() {
+        locationProvider.provideLocation { result in
             switch result {
             case .success(let location):
                 let endpoint = "\(self.urlString)&lat=\(location.latitude)&lon=\(location.longitude)"
                 self.performRequest(for: endpoint)
             case .failure(let error):
-                self.completion?(.failure(error))
+                        print(error)
+                // Handle WeatherError and LocationError here
+
+//                self.completion?(.failure(error))
             }
         }
     }
     
     private func performRequest(for endpoint: String) {
         guard let url = URL(string: endpoint) else {
+            self.completion?(.failure(.invalidCityName))
             return
         }
             let session = URLSession(configuration: .default)
@@ -79,6 +82,7 @@ class WeatherApiService: WeatherService {
         }
     }
 }
+
 
 
 
