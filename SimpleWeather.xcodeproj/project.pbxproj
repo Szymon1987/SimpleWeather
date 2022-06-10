@@ -10,7 +10,7 @@
 		AD44A6722800B197007C0463 /* WeatherViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44A6712800B197007C0463 /* WeatherViewControllerTests.swift */; };
 		AD44A67B2800B6D6007C0463 /* LocationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44A6782800B1F6007C0463 /* LocationServiceTests.swift */; };
 		AD491F6827FF2A0D006F0585 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD491F6727FF2A0D006F0585 /* Haptic.swift */; };
-		AD4E312628537E9A00BFBB1C /* Notess in Resources */ = {isa = PBXBuildFile; fileRef = AD4E312528537E9A00BFBB1C /* Notess */; };
+		AD4E312628537E9A00BFBB1C /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = AD4E312528537E9A00BFBB1C /* Notes */; };
 		AD8422A0282C4A9900518D72 /* WeatherApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0405327FD8EE100D8AC4A /* WeatherApiService.swift */; };
 		ADAB6C11283FCD8E00324376 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAB6C10283FCD8E00324376 /* Location.swift */; };
 		ADAB6C13283FCF6000324376 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAB6C12283FCF6000324376 /* LocationService.swift */; };
@@ -42,7 +42,7 @@
 		AD44A6712800B197007C0463 /* WeatherViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewControllerTests.swift; sourceTree = "<group>"; };
 		AD44A6782800B1F6007C0463 /* LocationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceTests.swift; sourceTree = "<group>"; };
 		AD491F6727FF2A0D006F0585 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
-		AD4E312528537E9A00BFBB1C /* Notess */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notess; sourceTree = "<group>"; };
+		AD4E312528537E9A00BFBB1C /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		ADAB6C10283FCD8E00324376 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		ADAB6C12283FCF6000324376 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		ADAB6C1628477F0700324376 /* WeatherApiServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApiServiceTests.swift; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 		ADB0405027FCED0800D8AC4A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				AD4E312528537E9A00BFBB1C /* Notess */,
+				AD4E312528537E9A00BFBB1C /* Notes */,
 				ADB0405127FCEE8A00D8AC4A /* WeatherServiceApiStrings.swift */,
 				AD491F6727FF2A0D006F0585 /* Haptic.swift */,
 				ADC740A328392F8000791C33 /* WeatherError.swift */,
@@ -252,7 +252,7 @@
 			files = (
 				ADB0404227FC931C00D8AC4A /* LaunchScreen.storyboard in Resources */,
 				ADB0403F27FC931C00D8AC4A /* Assets.xcassets in Resources */,
-				AD4E312628537E9A00BFBB1C /* Notess in Resources */,
+				AD4E312628537E9A00BFBB1C /* Notes in Resources */,
 				ADB0403D27FC930A00D8AC4A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
