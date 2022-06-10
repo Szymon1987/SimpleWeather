@@ -20,7 +20,16 @@ enum WeatherError: String, Error {
 //    case allowAccess = "Allow 'SimpleWeather' to access yout location in the device Settings"
 }
 
-enum LocationError: String, Error {
-    case allowAccess = "Allow 'SimpleWeather' to access yout location in the device Settings"
-    case locationError = "Error fetching location. Please try again"
+enum LocationError: LocalizedError {
+    case deniedAccess
+    case unknown
+    
+    var errorDescription: String? {
+        switch self {
+        case .deniedAccess:
+            return "Allow 'SimpleWeather' to access yout location in the device Settings"
+        case .unknown:
+            return  "Error fetching location. Please try again"
+        }
+    }
 }
