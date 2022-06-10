@@ -7,17 +7,24 @@
 
 import Foundation
 
-enum WeatherError: String, Error {
-    case invalidCityName = "Please enter valid city name."
-    case unableToComplete = "Unable to complete the request. Please check your internet connection."
-    case invalidResponse = "Unable to complete the request. Please try again later."
-    case invalidData = "The data received from the server was invalid. Please try again later."
+enum WeatherError: LocalizedError {
+    case invalidCityName
+    case unableToComplete
+    case invalidResponse
+    case invalidData
     
-    
-//    case locationError = "Error fetching location. Please try again"
-    
-    
-//    case allowAccess = "Allow 'SimpleWeather' to access yout location in the device Settings"
+    var errorDescription: String? {
+        switch self {
+        case .invalidCityName:
+            return "Please enter valid city name."
+        case .unableToComplete:
+            return "Unable to complete the request. Please check your internet connection."
+        case .invalidResponse:
+            return "Unable to complete the request. Please try again later."
+        case .invalidData:
+            return "The data received from the server was invalid. Please try again later."
+        }
+    }
 }
 
 enum LocationError: LocalizedError {
