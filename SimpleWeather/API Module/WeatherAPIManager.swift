@@ -8,6 +8,8 @@
 import Foundation
 
 protocol WeatherAPIManager {
-    func fetchWeatherData(for cityName: String, completion: )
-    func fetchWeatherData(for location: Location)
+    typealias WeatherAPICompletionBlock = (Result<WeatherModel, WeatherAPIError>) -> Void
+    
+    func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock)
+    func fetchWeatherData(for location: Location, completion: @escaping WeatherAPICompletionBlock)
 }

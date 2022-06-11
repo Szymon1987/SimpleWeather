@@ -11,17 +11,35 @@ class WeatherInteractor {
     let locationManager: LocationManager
     let apiManager: WeatherAPIManager
     
+    weak var viewController: WeatherViewControllerProtocol!
+    
     internal init(locationManager: LocationManager, apiManager: WeatherAPIManager) {
         self.locationManager = locationManager
         self.apiManager = apiManager
     }
 
-    private func processhWeatherDataFor(_ result: Result<Location, LocationError>) {
-        switch result {
+    private func processhWeatherDataFor(_ locationRequestResult: Result<Location, LocationError>) {
+        switch locationRequestResult {
         case let .success(location):
-            apiManager.fetchWeatherData(for: loc)
+            apiManager.fetchWeatherData(for: location, completion: { [weak self] weatherAPIResponse in
+                if let self = self {
+                    self.processWeatherAPIResponse(weatherAPIResponse)
+                }
+            })
             break
-        case .failure(_):
+        case let .failure(error):
+            viewController.showErrorAlert(error)
+            break
+        }
+    }
+    
+    private func processWeatherAPIResponse(_ response: Result<WeatherModel, WeatherAPIError>) {
+        switch response {
+        case let .success(weatherModel):
+            viewController.updateWeatherDataInUI(with: WeatherConditionViewModel(model: weatherModel))
+            break
+        case let .failure(error):
+            viewController.showErrorAlert(error)
             break
         }
     }
@@ -35,12 +53,23 @@ extension WeatherInteractor: WeatherInteractorProtocol {
     }
     
     func didPressTheCurrentLocationButton() {
+        viewController.triggerLightHapticFeedback()
+        viewController.showSpinner()
         locationManager.requestLocation { [weak self] result in
             if self != nil { self!.processhWeatherDataFor(result) }
         }
     }
     
-    func didSearchForCity(withName name: String) {
-        
+    func didSearchForCity(withName cityName: String) {
+        if (cityName != "") {
+            let trimmedCityName = cityName.trimmingCharacters(in: .whitespaces)
+            viewController.showSpinner()
+            viewController.triggerLightHapticFeedback()
+            apiManager.fetchWeatherData(for: trimmedCityName, completion: { [weak self] weatherAPIResponse in
+                if let self = self {
+                    self.processWeatherAPIResponse(weatherAPIResponse)
+                }
+            })
+        }
     }
 }

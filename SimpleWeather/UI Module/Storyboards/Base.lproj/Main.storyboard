@@ -186,7 +186,7 @@
                         <outlet property="celciusLabel" destination="sKw-en-Jvg" id="v1u-yv-wuY"/>
                         <outlet property="cityLabel" destination="jqM-bI-idQ" id="StU-If-0Ks"/>
                         <outlet property="searchTextField" destination="wDf-Yg-TJg" id="YxV-Xn-GfP"/>
-                        <outlet property="tempLabel" destination="EQE-1R-YLg" id="Zda-tf-v2g"/>
+                        <outlet property="temperatureLabel" destination="EQE-1R-YLg" id="Zda-tf-v2g"/>
                         <outlet property="weatherImageView" destination="5R4-2o-iez" id="jNl-0l-L2h"/>
                     </connections>
                 </viewController>

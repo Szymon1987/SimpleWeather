@@ -13,13 +13,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let urlString = WeatherServiceApiStrings.openWeatherBaseUrl + WeatherServiceApiStrings.openWeatherApiKey + WeatherServiceApiStrings.inCelcius
-        let locationService = LocationService()
-        let service = WeatherApiService(locationProvider: locationService, urlString: urlString)
-        let vc = WeatherViewController.make(service: service)
+        let weatherVC = WeatherSceneBuilder.build()
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = vc
+        window?.rootViewController = weatherVC
         window?.makeKeyAndVisible()
     }
 }

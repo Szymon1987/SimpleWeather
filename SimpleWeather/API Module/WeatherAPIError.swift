@@ -1,14 +1,15 @@
 //
-//  WeatherError.swift
+//  WeatherAPIError.swift
 //  SimpleWeather
 //
-//  Created by Szymon Tadrzak on 21/05/2022.
+//  Created by Szymon Tadrzak on 11/06/2022.
 //
 
 import Foundation
 
-enum WeatherError: LocalizedError {
+enum WeatherAPIError: LocalizedError {
     case invalidCityName
+    case invalidLocation
     case unableToComplete
     case invalidResponse
     case invalidData
@@ -23,20 +24,8 @@ enum WeatherError: LocalizedError {
             return "Unable to complete the request. Please try again later."
         case .invalidData:
             return "The data received from the server was invalid. Please try again later."
-        }
-    }
-}
-
-enum LocationError: LocalizedError {
-    case deniedAccess
-    case unknown
-    
-    var errorDescription: String? {
-        switch self {
-        case .deniedAccess:
-            return "Allow 'SimpleWeather' to access yout location in the device Settings"
-        case .unknown:
-            return  "Error fetching location. Please try again"
+        case .invalidLocation:
+            return "The location cannot be retrieved properly."
         }
     }
 }

@@ -60,7 +60,7 @@ extension CoreLocationLocationManager: CLLocationManagerDelegate {
     }
     
     //MARK: Helpers
-    private func complete(with state:Result<Location, LocationError>) {
+    private func complete(with state: Result<Location, LocationError>) {
         if let completionBlock = completionBlock {
             completionBlock(state)
         }

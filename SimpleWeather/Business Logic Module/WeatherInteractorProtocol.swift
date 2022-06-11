@@ -10,5 +10,5 @@ import Foundation
 protocol WeatherInteractorProtocol {
     func viewDidLoad()
     func didPressTheCurrentLocationButton()
-    func didSearchForCity(withName name: String)
+    func didSearchForCity(withName cityName: String)
 }
