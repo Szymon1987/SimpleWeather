@@ -53,11 +53,7 @@ extension URLSessionWeatherAPIManager: WeatherAPIManager {
         let decoder = JSONDecoder()
         do {
             let decodedWeatherData = try decoder.decode(WeatherData.self, from: data)
-            let name = decodedWeatherData.name
-            let temperature = decodedWeatherData.main.temp
-            let id = decodedWeatherData.weather[0].id
-            let weatherModel = WeatherModel(cityName: name, temperature: temperature, conditionId: id)
-            return .success(weatherModel)
+            return .success(decodedWeatherData.weatherModel)
         } catch {
             return .failure(.invalidData)
         }

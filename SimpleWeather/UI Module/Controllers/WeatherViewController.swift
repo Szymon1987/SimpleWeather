@@ -109,25 +109,39 @@ extension WeatherViewController: WeatherViewControllerProtocol {
     }
     
     func showSpinner() {
-        activityIndicator.startAnimating()
-        configureSpinnerVisibility(isHidden: false)
+        guaranteeMainThread {
+            self.activityIndicator.startAnimating()
+            self.configureSpinnerVisibility(isHidden: false)
+        }
     }
     
     func hideSpinner() {
-        activityIndicator.stopAnimating()
-        configureSpinnerVisibility(isHidden: true)
+        guaranteeMainThread {
+            self.activityIndicator.stopAnimating()
+            self.configureSpinnerVisibility(isHidden: true)
+        }
     }
     
     func updateWeatherDataInUI(with viewModel: WeatherConditionViewModel) {
-        temperatureLabel.text = viewModel.temperature
-        weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
-        cityLabel.text = viewModel.cityName
-        celciusLabel.text = "°C"
+        guaranteeMainThread {
+            self.temperatureLabel.text = viewModel.temperature
+            self.weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
+            self.cityLabel.text = viewModel.cityName
+            self.celciusLabel.text = "°C"
+        }
     }
     
     func showErrorAlert(_ error: LocalizedError) {
-        let ac = UIAlertController(title: error.localizedDescription, message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
-        self.present(ac, animated: true)
+        guaranteeMainThread {
+            let ac = UIAlertController(title: error.localizedDescription, message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+            self.present(ac, animated: true)
+        }
+    }
+    
+    func clearSearchTextField() {
+        guaranteeMainThread {
+            self.searchTextField.text = ""
+        }
     }
 }

@@ -13,6 +13,11 @@ class CoreLocationLocationManager: NSObject {
     private let internalLocationManager = CLLocationManager()
     private var completionBlock: LocationCompletionBlock?
     
+    override init() {
+        super.init()
+        internalLocationManager.delegate = self
+    }
+
     //MARK: - CoreLocation Private Methods
     private func isAccessToLocationAuthorized() -> Bool {
         return  internalLocationManager.authorizationStatus == .authorizedAlways ||

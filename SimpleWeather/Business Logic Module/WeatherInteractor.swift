@@ -11,7 +11,7 @@ class WeatherInteractor {
     let locationManager: LocationManager
     let apiManager: WeatherAPIManager
     
-    weak var viewController: WeatherViewControllerProtocol!
+    var presenter: WeatherPresenterProtocol!
     
     internal init(locationManager: LocationManager, apiManager: WeatherAPIManager) {
         self.locationManager = locationManager
@@ -28,7 +28,7 @@ class WeatherInteractor {
             })
             break
         case let .failure(error):
-            viewController.showErrorAlert(error)
+            presenter.presentError(error)
             break
         }
     }
@@ -36,10 +36,10 @@ class WeatherInteractor {
     private func processWeatherAPIResponse(_ response: Result<WeatherModel, WeatherAPIError>) {
         switch response {
         case let .success(weatherModel):
-            viewController.updateWeatherDataInUI(with: WeatherConditionViewModel(model: weatherModel))
+            presenter.presentWeatherData(model: weatherModel)
             break
         case let .failure(error):
-            viewController.showErrorAlert(error)
+            presenter.presentError(error)
             break
         }
     }
@@ -53,8 +53,7 @@ extension WeatherInteractor: WeatherInteractorProtocol {
     }
     
     func didPressTheCurrentLocationButton() {
-        viewController.triggerLightHapticFeedback()
-        viewController.showSpinner()
+        presenter.provideFeedbackForTappingCurrentLocationButton()
         locationManager.requestLocation { [weak self] result in
             if self != nil { self!.processhWeatherDataFor(result) }
         }
@@ -63,8 +62,7 @@ extension WeatherInteractor: WeatherInteractorProtocol {
     func didSearchForCity(withName cityName: String) {
         if (cityName != "") {
             let trimmedCityName = cityName.trimmingCharacters(in: .whitespaces)
-            viewController.showSpinner()
-            viewController.triggerLightHapticFeedback()
+            presenter.provideFeedbackForSearchRequest()
             apiManager.fetchWeatherData(for: trimmedCityName, completion: { [weak self] weatherAPIResponse in
                 if let self = self {
                     self.processWeatherAPIResponse(weatherAPIResponse)

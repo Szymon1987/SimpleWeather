@@ -13,4 +13,5 @@ protocol WeatherViewControllerProtocol: AnyObject {
     func hideSpinner()
     func updateWeatherDataInUI(with viewModel: WeatherConditionViewModel)
     func showErrorAlert(_ error: LocalizedError)
+    func clearSearchTextField()
 }
