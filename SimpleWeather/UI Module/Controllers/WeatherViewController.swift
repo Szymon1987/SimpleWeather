@@ -22,7 +22,6 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
-        
         interactor.viewDidLoad()
     }
     
@@ -102,7 +101,7 @@ extension WeatherViewController: UITextFieldDelegate {
         interactor.didSearchForCity(withName: searchTextField.text!)
     }
 }
-
+// MARK: - WeatherViewControllerProtocol Protocol Methods
 extension WeatherViewController: WeatherViewControllerProtocol {
     func triggerLightHapticFeedback() {
         HapticFeedback.playLightImpact()
@@ -125,7 +124,7 @@ extension WeatherViewController: WeatherViewControllerProtocol {
     func updateWeatherDataInUI(with viewModel: WeatherConditionViewModel) {
         guaranteeMainThread {
             self.temperatureLabel.text = viewModel.temperature
-            self.weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
+//            self.weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
             self.cityLabel.text = viewModel.cityName
             self.celciusLabel.text = "°C"
         }

@@ -69,7 +69,7 @@
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="100" id="Idq-2a-jVi"/>
                                 </constraints>
                             </stackView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter the city name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wDf-Yg-TJg">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wDf-Yg-TJg">
                                 <rect key="frame" x="20" y="750" width="350" height="40"/>
                                 <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                 <constraints>
@@ -187,7 +187,7 @@
                         <outlet property="cityLabel" destination="jqM-bI-idQ" id="StU-If-0Ks"/>
                         <outlet property="searchTextField" destination="wDf-Yg-TJg" id="YxV-Xn-GfP"/>
                         <outlet property="temperatureLabel" destination="EQE-1R-YLg" id="Zda-tf-v2g"/>
-                        <outlet property="weatherImageView" destination="5R4-2o-iez" id="jNl-0l-L2h"/>
+                        <outlet property="weatherImageView" destination="5R4-2o-iez" id="SzX-fI-9XR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

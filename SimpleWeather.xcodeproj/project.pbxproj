@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD44A6722800B197007C0463 /* WeatherViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44A6712800B197007C0463 /* WeatherViewControllerTests.swift */; };
 		AD44A67B2800B6D6007C0463 /* LocationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44A6782800B1F6007C0463 /* LocationServiceTests.swift */; };
 		AD491F6827FF2A0D006F0585 /* HapticFeedbackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD491F6727FF2A0D006F0585 /* HapticFeedbackHelper.swift */; };
 		AD4E312628537E9A00BFBB1C /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = AD4E312528537E9A00BFBB1C /* Notes */; };
@@ -24,8 +23,9 @@
 		AD4E31442854EC5E00BFBB1C /* WeatherConditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4E31432854EC5E00BFBB1C /* WeatherConditionViewModel.swift */; };
 		AD4E31492856374600BFBB1C /* WeatherPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4E31482856374600BFBB1C /* WeatherPresenter.swift */; };
 		AD4E314B2856375C00BFBB1C /* WeatherPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4E314A2856375C00BFBB1C /* WeatherPresenterProtocol.swift */; };
+		AD4E314F2857916D00BFBB1C /* WeatherViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4E314E2857916D00BFBB1C /* WeatherViewControllerTests.swift */; };
+		AD4E3151285792E900BFBB1C /* URLSessionWeatherAPIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4E3150285792E900BFBB1C /* URLSessionWeatherAPIManagerTests.swift */; };
 		ADAB6C11283FCD8E00324376 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAB6C10283FCD8E00324376 /* Location.swift */; };
-		ADAB6C1728477F0800324376 /* WeatherApiServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAB6C1628477F0700324376 /* WeatherApiServiceTests.swift */; };
 		ADB0403627FC930A00D8AC4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403527FC930A00D8AC4A /* AppDelegate.swift */; };
 		ADB0403827FC930A00D8AC4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403727FC930A00D8AC4A /* SceneDelegate.swift */; };
 		ADB0403A27FC930A00D8AC4A /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB0403927FC930A00D8AC4A /* WeatherViewController.swift */; };
@@ -49,7 +49,6 @@
 
 /* Begin PBXFileReference section */
 		AD44A66F2800B197007C0463 /* SimpleWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AD44A6712800B197007C0463 /* WeatherViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewControllerTests.swift; sourceTree = "<group>"; };
 		AD44A6782800B1F6007C0463 /* LocationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceTests.swift; sourceTree = "<group>"; };
 		AD491F6727FF2A0D006F0585 /* HapticFeedbackHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackHelper.swift; sourceTree = "<group>"; };
 		AD4E312528537E9A00BFBB1C /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
@@ -66,8 +65,9 @@
 		AD4E31432854EC5E00BFBB1C /* WeatherConditionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherConditionViewModel.swift; sourceTree = "<group>"; };
 		AD4E31482856374600BFBB1C /* WeatherPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPresenter.swift; sourceTree = "<group>"; };
 		AD4E314A2856375C00BFBB1C /* WeatherPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPresenterProtocol.swift; sourceTree = "<group>"; };
+		AD4E314E2857916D00BFBB1C /* WeatherViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewControllerTests.swift; sourceTree = "<group>"; };
+		AD4E3150285792E900BFBB1C /* URLSessionWeatherAPIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionWeatherAPIManagerTests.swift; sourceTree = "<group>"; };
 		ADAB6C10283FCD8E00324376 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		ADAB6C1628477F0700324376 /* WeatherApiServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApiServiceTests.swift; sourceTree = "<group>"; };
 		ADB0403227FC930A00D8AC4A /* SimpleWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADB0403527FC930A00D8AC4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADB0403727FC930A00D8AC4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,9 +102,9 @@
 		AD44A6702800B197007C0463 /* SimpleWeatherTests */ = {
 			isa = PBXGroup;
 			children = (
+				AD4E314E2857916D00BFBB1C /* WeatherViewControllerTests.swift */,
 				AD44A6782800B1F6007C0463 /* LocationServiceTests.swift */,
-				AD44A6712800B197007C0463 /* WeatherViewControllerTests.swift */,
-				ADAB6C1628477F0700324376 /* WeatherApiServiceTests.swift */,
+				AD4E3150285792E900BFBB1C /* URLSessionWeatherAPIManagerTests.swift */,
 			);
 			path = SimpleWeatherTests;
 			sourceTree = "<group>";
@@ -358,9 +358,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADAB6C1728477F0800324376 /* WeatherApiServiceTests.swift in Sources */,
+				AD4E3151285792E900BFBB1C /* URLSessionWeatherAPIManagerTests.swift in Sources */,
+				AD4E314F2857916D00BFBB1C /* WeatherViewControllerTests.swift in Sources */,
 				AD44A67B2800B6D6007C0463 /* LocationServiceTests.swift in Sources */,
-				AD44A6722800B197007C0463 /* WeatherViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
