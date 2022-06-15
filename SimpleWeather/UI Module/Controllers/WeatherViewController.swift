@@ -124,7 +124,7 @@ extension WeatherViewController: WeatherViewControllerProtocol {
     func updateWeatherDataInUI(with viewModel: WeatherConditionViewModel) {
         guaranteeMainThread {
             self.temperatureLabel.text = viewModel.temperature
-//            self.weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
+            self.weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
             self.cityLabel.text = viewModel.cityName
             self.celciusLabel.text = "°C"
         }

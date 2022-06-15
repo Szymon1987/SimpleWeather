@@ -35,7 +35,7 @@ class CoreLocationLocationManager: NSObject {
 
 //MARK: - LocationManager Protocol Conformance
 extension CoreLocationLocationManager: LocationManager {
-    func requestLocation(completion: @escaping (Result<Location, LocationError>) -> Void) {
+    func requestLocation(completion: @escaping LocationCompletionBlock) {
         completionBlock = completion
         if (isAccessToLocationAuthorized()) {
             internalLocationManager.requestLocation()

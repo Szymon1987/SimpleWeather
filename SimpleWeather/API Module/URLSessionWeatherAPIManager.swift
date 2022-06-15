@@ -17,18 +17,18 @@ class URLSessionWeatherAPIManager {
 
 //MARK: - WeatherAPIManager Protocol Methods
 extension URLSessionWeatherAPIManager: WeatherAPIManager {
-    func fetchWeatherData(for cityName: String, completion: @escaping (Result<WeatherModel, WeatherAPIError>) -> Void) {
+    func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock) {
         let endpointURLString = "\(urlString)&q=\(cityName)"
         performRequest(for: endpointURLString, errorType: .invalidCityName, completion: completion)
     }
     
-    func fetchWeatherData(for location: Location, completion: @escaping (Result<WeatherModel, WeatherAPIError>) -> Void) {
+    func fetchWeatherData(for location: Location, completion: @escaping WeatherAPICompletionBlock) {
         let endpointURLString = "\(self.urlString)&lat=\(location.latitude)&lon=\(location.longitude)"
         performRequest(for: endpointURLString, errorType: .invalidLocation, completion: completion)
     }
     
     //MARK: - Private Methods
-    private func performRequest(for endpointURL: URL, completion: @escaping (Result<WeatherModel, WeatherAPIError>) -> Void) {
+    private func performRequest(for endpointURL: URL, completion: @escaping WeatherAPICompletionBlock) {
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: endpointURL) { [weak self] data, response, error in
             if let self = self {
@@ -50,9 +50,8 @@ extension URLSessionWeatherAPIManager: WeatherAPIManager {
     }
     
     private func parseJSON(with data: Data) -> (Result<WeatherModel, WeatherAPIError>) {
-        let decoder = JSONDecoder()
         do {
-            let decodedWeatherData = try decoder.decode(WeatherData.self, from: data)
+            let decodedWeatherData = try JSONDecoder().decode(WeatherData.self, from: data)
             return .success(decodedWeatherData.weatherModel)
         } catch {
             return .failure(.invalidData)
@@ -60,7 +59,7 @@ extension URLSessionWeatherAPIManager: WeatherAPIManager {
     }
     
     //MARK: - Helpers
-    private func performRequest(for urlString: String, errorType: WeatherAPIError, completion: @escaping (Result<WeatherModel, WeatherAPIError>) -> Void) {
+    private func performRequest(for urlString: String, errorType: WeatherAPIError, completion: @escaping WeatherAPICompletionBlock) {
         if let url = URL(string: urlString) {
             performRequest(for: url,completion: completion)
         } else {
