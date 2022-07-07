@@ -1,3 +1,4 @@
 # SimpleWeather
 SimpleWeather App. The Project demonstrates the few usuful architecture patterns.
-![Screenshot 1](https://user-images.githubusercontent.com/77536764/177764246-4177ea2d-1a43-45e4-94b3-513da62a676e.png)
+
+![Screenshot 1](https://user-images.githubusercontent.com/77536764/177764670-aa538883-f638-4625-b867-a32579e89c5b.png)
