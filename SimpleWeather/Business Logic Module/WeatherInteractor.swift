@@ -11,11 +11,13 @@ class WeatherInteractor {
     let locationManager: LocationManager
     let apiManager: WeatherAPIManager
     
-    var presenter: WeatherPresenterProtocol!
+//    var presenter: WeatherPresenterProtocol!
+    private let presenter: WeatherPresenterProtocol
     
-    internal init(locationManager: LocationManager, apiManager: WeatherAPIManager) {
+    internal init(locationManager: LocationManager, apiManager: WeatherAPIManager, presenter: WeatherPresenterProtocol) {
         self.locationManager = locationManager
         self.apiManager = apiManager
+        self.presenter = presenter
     }
 
     private func processhWeatherDataFor(_ locationRequestResult: Result<Location, LocationError>) {
@@ -44,6 +46,7 @@ class WeatherInteractor {
         }
     }
 }
+
 
 extension WeatherInteractor: WeatherInteractorProtocol {
     func viewDidLoad() {

@@ -9,7 +9,7 @@ import Foundation
 
 class URLSessionWeatherAPIManager {
     private let urlString: String
-    
+
     init(urlString: String) {
         self.urlString = urlString
     }
@@ -17,6 +17,7 @@ class URLSessionWeatherAPIManager {
 
 //MARK: - WeatherAPIManager Protocol Methods
 extension URLSessionWeatherAPIManager: WeatherAPIManager {
+    
     func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock) {
         let endpointURLString = "\(urlString)&q=\(cityName)"
         performRequest(for: endpointURLString, errorType: .invalidCityName, completion: completion)

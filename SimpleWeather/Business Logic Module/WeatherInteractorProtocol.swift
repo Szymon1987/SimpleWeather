@@ -12,3 +12,4 @@ protocol WeatherInteractorProtocol {
     func didPressTheCurrentLocationButton()
     func didSearchForCity(withName cityName: String)
 }
+

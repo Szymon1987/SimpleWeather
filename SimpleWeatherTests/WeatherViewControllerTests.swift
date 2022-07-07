@@ -51,12 +51,8 @@ class WeatherViewControllerTests: XCTestCase {
         XCTAssertTrue(!sut.activityIndicator.isHidden)
     }
     
-    
-    func test_frame_after_keyboard() throws {
+    func test_update_weatherData_In_UI() throws {
         let sut = try makeSUT()
-        sut.loadViewIfNeeded()
-        let y = sut.view.frame.origin.y
-        XCTAssertEqual(y, 0)
     }
 
     
@@ -64,13 +60,15 @@ class WeatherViewControllerTests: XCTestCase {
     private func makeSUT() throws -> WeatherViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let vc = try XCTUnwrap(storyboard.instantiateInitialViewController() as? WeatherViewController)
-        let weatherAPIBaseURLString = WeatherAPIStrings.openWeatherBaseUrl + WeatherAPIStrings.openWeatherApiKey + WeatherAPIStrings.inCelcius
-        let locationManager = CoreLocationLocationManager()
-        let weatherAPIManager = URLSessionWeatherAPIManager(urlString: weatherAPIBaseURLString)
-        let interactor = WeatherInteractor(locationManager: locationManager,
-                                           apiManager: weatherAPIManager)
+        let interactor = MockWeatherInteractor()
         vc.interactor = interactor
         return vc
+    }
+    
+   private class MockWeatherInteractor: WeatherInteractorProtocol {
+        func viewDidLoad() {}
+        func didPressTheCurrentLocationButton() {}
+        func didSearchForCity(withName cityName: String) {}
     }
     
 }

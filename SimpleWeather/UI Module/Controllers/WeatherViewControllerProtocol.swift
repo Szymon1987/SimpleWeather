@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol WeatherViewControllerProtocol: AnyObject {
+protocol WeatherViewControllerProtocol {
     func triggerLightHapticFeedback()
     func showSpinner()
     func hideSpinner()
