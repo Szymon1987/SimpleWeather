@@ -51,11 +51,6 @@ class WeatherViewControllerTests: XCTestCase {
         XCTAssertTrue(!sut.activityIndicator.isHidden)
     }
     
-    func test_update_weatherData_In_UI() throws {
-        let sut = try makeSUT()
-    }
-
-    
     
     private func makeSUT() throws -> WeatherViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
@@ -70,7 +65,6 @@ class WeatherViewControllerTests: XCTestCase {
         func didPressTheCurrentLocationButton() {}
         func didSearchForCity(withName cityName: String) {}
     }
-    
 }
 
 

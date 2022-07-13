@@ -7,6 +7,8 @@
 
 import Foundation
 
+// NOTICE: WeakRef implemented only for practice purposes
+
 class WeakRef<T: AnyObject> {
     
     weak var object: T?

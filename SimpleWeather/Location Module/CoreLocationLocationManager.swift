@@ -8,22 +8,10 @@
 import Foundation
 import CoreLocation
 
-
-protocol CLLocationManagerProtocol {
-    var location: CLLocation? { get }
-    var delegate: CLLocationManagerDelegate? { get set }
-    var authorizationStatus: CLAuthorizationStatus { get }
-    func requestWhenInUseAuthorization()
-    func stopUpdatingLocation()
-    func requestLocation()
-}
-
-extension CLLocationManager: CLLocationManagerProtocol {}
-
-
 class CoreLocationLocationManager: NSObject {
     //MARK: - Properties
-    var internalLocationManager: CLLocationManagerProtocol = CLLocationManager()
+    
+    var internalLocationManager = CLLocationManager()
     private var completionBlock: LocationCompletionBlock?
     
     override init() {

@@ -12,15 +12,14 @@ class URLSessionWeatherAPIManagerTests: XCTestCase {
 
     func test_completion_with_invalid_cityname() {
         let sut = URLSessionWeatherAPIManagerMock()
-        sut.
+
     }
-    
-    
 }
 
 
 
 class URLSessionWeatherAPIManagerMock: WeatherAPIManager {
+    
     func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock) {
         completion(.failure(.invalidCityName))
     }
@@ -28,6 +27,4 @@ class URLSessionWeatherAPIManagerMock: WeatherAPIManager {
     func fetchWeatherData(for location: Location, completion: @escaping WeatherAPICompletionBlock) {
         
     }
-    
-    
 }

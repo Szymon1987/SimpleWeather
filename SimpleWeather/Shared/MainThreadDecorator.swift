@@ -7,6 +7,8 @@
 
 import Foundation
 
+// NOTICE: MainThreadDecorator implemented only for practice purposes
+
 final class MainThreadDecorator: WeatherAPIManager {
     
     private let decoratee: WeatherAPIManager

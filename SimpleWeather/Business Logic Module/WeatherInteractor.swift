@@ -8,10 +8,10 @@
 import Foundation
 
 class WeatherInteractor {
-    let locationManager: LocationManager
-    let apiManager: WeatherAPIManager
     
-//    var presenter: WeatherPresenterProtocol!
+    private let locationManager: LocationManager
+    private let apiManager: WeatherAPIManager
+    
     private let presenter: WeatherPresenterProtocol
     
     internal init(locationManager: LocationManager, apiManager: WeatherAPIManager, presenter: WeatherPresenterProtocol) {

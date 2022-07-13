@@ -13,11 +13,11 @@ class WeatherInteractorTests: XCTestCase {
     func test_viewDidLoad() {
         let sut = makeSUT()
         sut.viewDidLoad()
+
     
     }
     
     func test_did_press_the_current_location_button() {
-        
         
     }
 
@@ -25,18 +25,15 @@ class WeatherInteractorTests: XCTestCase {
     
     func test_did_search_for_city_does_nothing_when_cityString_is_empty() {
         
-        
-        
-        
-        let sut = makeSUT()
-        sut.didSearchForCity(withName: "1frefre")
+        let locMan = CoreLocationLocationManagerStub()
+        let apiMan = URLSessionWeatherApiManagerStub()
+        let presenter = WeatherPresenterStub()
+        let sut = WeatherInteractor(locationManager: locMan, apiManager: apiMan, presenter: presenter)
+        sut.didSearchForCity(withName: "cityName")
+        sut.viewDidLoad()
+        XCTAssertEqual(locMan.callCount, 1)
     
     }
-    
-    
-    
-    
-    
     
     
     
@@ -50,17 +47,12 @@ class WeatherInteractorTests: XCTestCase {
 
     
     private class CoreLocationLocationManagerStub: LocationManager {
-        var callCount = 0
+        var callCount = 1
         func requestLocation(completion: @escaping LocationCompletionBlock) {
             callCount += 1
         }
     }
 
-//    private class URLSessionWeatherApiManagerStub: WeatherAPIManager {
-//
-//        func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock) {}
-//        func fetchWeatherData(for location: Location, completion: @escaping WeatherAPICompletionBlock) {}
-//    }
 
     private class WeatherPresenterStub: WeatherPresenterProtocol {
         func presentError(_ error: LocalizedError) {}
@@ -80,16 +72,12 @@ class WeatherInteractorTests: XCTestCase {
 
 private class URLSessionWeatherApiManagerStub: WeatherAPIManager {
     
-
     func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock) {
-        
-        
         
     }
     
     
     func fetchWeatherData(for location: Location, completion: @escaping WeatherAPICompletionBlock) {
-
         
     }
 }

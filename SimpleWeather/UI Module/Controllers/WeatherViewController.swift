@@ -50,14 +50,7 @@ class WeatherViewController: UIViewController {
     private func configureSpinnerVisibility(isHidden: Bool) {
         activityIndicator.isHidden = isHidden
     }
-    
-//    private func guaranteeMainThread(_ work: @escaping () -> Void) {
-//        if Thread.isMainThread {
-//            work()
-//        } else {
-//            DispatchQueue.main.async(execute: work)
-//        }
-//    }
+
     
     //MARK: - IBActions
     @IBAction func locationButtonTapped(_ sender: UIButton) {
@@ -77,12 +70,12 @@ extension WeatherViewController {
                                        object: nil)
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         self.view.frame.origin.y = 0 - keyboardSize.height
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         self.view.frame.origin.y = 0
     }
 }
@@ -109,39 +102,29 @@ extension WeatherViewController: WeatherViewControllerProtocol {
     }
     
     func showSpinner() {
-//        guaranteeMainThread {
             self.activityIndicator.startAnimating()
             self.configureSpinnerVisibility(isHidden: false)
-//        }
     }
     
     func hideSpinner() {
-//        guaranteeMainThread {
             self.activityIndicator.stopAnimating()
             self.configureSpinnerVisibility(isHidden: true)
-//        }
     }
     
     func updateWeatherDataInUI(with viewModel: WeatherConditionViewModel) {
-//        guaranteeMainThread {
             self.temperatureLabel.text = viewModel.temperature
             self.weatherImageView.image = UIImage(systemName: viewModel.weatherConditionIconName)
             self.cityLabel.text = viewModel.cityName
             self.celciusLabel.text = "°C"
-//        }
     }
     
     func showErrorAlert(_ error: LocalizedError) {
-//        guaranteeMainThread {
             let ac = UIAlertController(title: error.localizedDescription, message: nil, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .cancel))
             self.present(ac, animated: true)
-//        }
     }
     
     func clearSearchTextField() {
-//        guaranteeMainThread {
             self.searchTextField.text = ""
-//        }
     }
 }

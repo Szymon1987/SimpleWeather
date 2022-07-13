@@ -8,29 +8,28 @@
 import Foundation
 
 class WeatherPresenter {
-    //QUESTION: Does it have to always be some kind of viewcontroller? Maybe we should change the name of this property for "view" for example?
-    private let viewController: WeatherViewControllerProtocol
-//    weak var viewController: WeatherViewControllerProtocol!
-    // I added the initializer here as I think it is better practice to pass the viewController here as a dependency. That way the output property can be "private let"
+    
+    private let view: WeatherViewControllerProtocol
+
     init(output: WeatherViewControllerProtocol) {
-        self.viewController = output
+        self.view = output
     }
 }
 
 extension WeatherPresenter: WeatherPresenterProtocol {
     func presentError(_ error: LocalizedError) {
-        viewController.showErrorAlert(error)
-        viewController.hideSpinner()
+        view.showErrorAlert(error)
+        view.hideSpinner()
     }
     
     func presentWeatherData(model: WeatherModel) {
         let viewModel = WeatherConditionViewModel(model: model)
-        viewController.updateWeatherDataInUI(with: viewModel)
-        viewController.hideSpinner()
+        view.updateWeatherDataInUI(with: viewModel)
+        view.hideSpinner()
     }
     
     func provideFeedbackForTappingCurrentLocationButton() {
-        viewController.clearSearchTextField()
+        view.clearSearchTextField()
         presentLoadingState()
     }
     
@@ -40,7 +39,7 @@ extension WeatherPresenter: WeatherPresenterProtocol {
     
     //MARK: - Helper
     private func presentLoadingState() {
-        viewController.triggerLightHapticFeedback()
-        viewController.showSpinner()
+        view.triggerLightHapticFeedback()
+        view.showSpinner()
     }
 }
