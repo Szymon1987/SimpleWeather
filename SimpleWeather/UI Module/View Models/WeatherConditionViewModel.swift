@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct WeatherConditionViewModel {
     let cityName: String
@@ -39,4 +40,26 @@ struct WeatherConditionViewModel {
             return "cloud"
         }
     }
+}
+
+class Exammple: UIView {
+    
+    var view = UIView()
+    
+    private let colorCount: [UIColor: Int] = [:]
+    
+    func viewDidLoad() {
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        addSq(with: .red, at: sender.location(in: view))
+    }
+    
+    func addSq(with color: UIColor, at point: CGPoint) {
+        let view = UIView(frame: CGRect(x: point.x, y: point.y, width: 50, height: 50))
+        view.backgroundColor = .red
+        view.addSubview(view)
+    }
+    
 }

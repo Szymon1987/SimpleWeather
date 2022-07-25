@@ -11,10 +11,12 @@ import XCTest
 class WeatherInteractorTests: XCTestCase {
     
     func test_viewDidLoad() {
-        let sut = makeSUT()
+        let locationMansger = CoreLocationLocationManagerStub()
+        let sut = WeatherInteractor(locationManager: locationMansger, apiManager: URLSessionWeatherApiManagerStub(), presenter: WeatherPresenterStub())
+        
         sut.viewDidLoad()
-
-    
+        
+        XCTAssertEqual(locationMansger.callCount, 1)
     }
     
     func test_did_press_the_current_location_button() {
@@ -29,10 +31,20 @@ class WeatherInteractorTests: XCTestCase {
         let apiMan = URLSessionWeatherApiManagerStub()
         let presenter = WeatherPresenterStub()
         let sut = WeatherInteractor(locationManager: locMan, apiManager: apiMan, presenter: presenter)
-        sut.didSearchForCity(withName: "cityName")
-        sut.viewDidLoad()
-        XCTAssertEqual(locMan.callCount, 1)
+        
+        sut.didSearchForCity(withName: "")
+        XCTAssertEqual(apiMan.fetchWeatherDataForCiryCallCount, 0)
+    }
     
+    func test_did_search_for_city_calls_ApiManager_when_string_is_not_empty() {
+        
+        let locMan = CoreLocationLocationManagerStub()
+        let apiMan = URLSessionWeatherApiManagerStub()
+        let presenter = WeatherPresenterStub()
+        let sut = WeatherInteractor(locationManager: locMan, apiManager: apiMan, presenter: presenter)
+        
+        sut.didSearchForCity(withName: "cityName")
+        XCTAssertEqual(apiMan.fetchWeatherDataForCiryCallCount, 1)
     }
     
     
@@ -47,11 +59,12 @@ class WeatherInteractorTests: XCTestCase {
 
     
     private class CoreLocationLocationManagerStub: LocationManager {
-        var callCount = 1
+        var callCount = 0
         func requestLocation(completion: @escaping LocationCompletionBlock) {
             callCount += 1
         }
     }
+    
 
 
     private class WeatherPresenterStub: WeatherPresenterProtocol {
@@ -63,17 +76,12 @@ class WeatherInteractorTests: XCTestCase {
 }
 
 
-
-
-
-
-
-
-
 private class URLSessionWeatherApiManagerStub: WeatherAPIManager {
     
+    var fetchWeatherDataForCiryCallCount = 0
+    
     func fetchWeatherData(for cityName: String, completion: @escaping WeatherAPICompletionBlock) {
-        
+        fetchWeatherDataForCiryCallCount += 1
     }
     
     
