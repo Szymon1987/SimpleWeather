@@ -48,6 +48,6 @@ jobs:
 workflows:
   build-test-lint:
     jobs:
-      - swiftlint
-      - danger
+#      - swiftlint
+#      - danger
       - build-and-test
