@@ -60,7 +60,7 @@ class WeatherViewControllerTests: XCTestCase {
         return vc
     }
     
-   private class MockWeatherInteractor: WeatherInteractorProtocol {
+   private class MockWeatherInteractor: WeatherInteracting {
         func viewDidLoad() {}
         func didPressTheCurrentLocationButton() {}
         func didSearchForCity(withName cityName: String) {}

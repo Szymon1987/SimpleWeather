@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol WeatherInteractorProtocol {
+protocol WeatherInteracting {
     func viewDidLoad()
     func didPressTheCurrentLocationButton()
     func didSearchForCity(withName cityName: String)

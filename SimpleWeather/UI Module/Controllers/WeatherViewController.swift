@@ -17,7 +17,7 @@ class WeatherViewController: UIViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var searchTextField: UITextField!
  
-    var interactor: WeatherInteractorProtocol!
+    var interactor: WeatherInteracting!
     
     //MARK: - ViewController Lifecycle
     override func viewDidLoad() {

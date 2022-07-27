@@ -48,7 +48,7 @@ class WeatherInteractor {
 }
 
 
-extension WeatherInteractor: WeatherInteractorProtocol {
+extension WeatherInteractor: WeatherInteracting {
     func viewDidLoad() {
         locationManager.requestLocation { [weak self] result in
             if self != nil { self!.processhWeatherDataFor(result) }

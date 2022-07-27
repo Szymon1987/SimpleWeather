@@ -11,12 +11,10 @@ import XCTest
 class URLSessionWeatherAPIManagerTests: XCTestCase {
 
     func test_completion_with_invalid_cityname() {
-        let sut = URLSessionWeatherAPIManagerMock()
+//        let sut = URLSessionWeatherAPIManagerMock()
 
     }
 }
-
-
 
 class URLSessionWeatherAPIManagerMock: WeatherAPIManager {
     
