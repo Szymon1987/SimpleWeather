@@ -11,7 +11,7 @@ jobs:
           command: fastlane scan
           environment:
             SCAN_DEVICE: iPhone 13
-            SCAN_SCHEME: SimpleWeatherTests
+            SCAN_SCHEME: SimpleWeatherTest
       - store_test_results:
           path: test_output/report.xml
       - store_artifacts:
