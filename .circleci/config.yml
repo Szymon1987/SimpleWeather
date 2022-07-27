@@ -12,15 +12,15 @@ jobs:
           environment:
             SCAN_DEVICE: iPhone 13
             SCAN_SCHEME: SimpleWeather
-#      - store_test_results:
-#          path: test_output/report.xml
-#      - store_artifacts:
-#          path: /tmp/test-results
-#          destination: scan-test-results
-#      - store_artifacts:
-#          path: ~/Library/Logs/scan
-#          destination: scan-logs
-#
+      - store_test_results:
+          path: test_output/report.xml
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: scan-test-results
+      - store_artifacts:
+          path: ~/Library/Logs/scan
+          destination: scan-logs
+
 #  swiftlint:
 #    docker:
 #      - image: dantoml/swiftlint:latest
@@ -52,9 +52,7 @@ jobs:
 #      - danger
 #      - build-and-test
 
-
 workflows:
-    build-and-test:
-        jobs:
-            - build-and-test
-        
+  build-and-test:
+    jobs:
+      - build-and-test
