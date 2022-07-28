@@ -1,4 +1,4 @@
-version: 2.1
+ version: 2.1
 
 jobs:
   build-and-test:
@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Build and run tests
-          command: fastlane scan
+#          command: fastlane scan
           environment:
             SCAN_DEVICE: iPhone 13
             SCAN_SCHEME: SimpleWeatherTests
